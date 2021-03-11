@@ -294,7 +294,28 @@ func replaceExecutable(targetFile, newFile, savedFile string) error {
 			}
 		}
 		if saveErr == nil {
-			fmt.Printf("The old executable was saved as %s\n", savedFile)
+			removeOld := true
+			if removeOld {
+				if rmErr := os.Remove(savedFile); rmErr != nil {
+					if os.IsPermission(rmErr) && runtime.GOOS == "windows" {
+						if rmDelayErr := removeOnReboot(savedFile); rmDelayErr != nil {
+							if os.IsPermission(rmDelayErr) {
+								fs.Errorf(nil, "%s: could not remove old executable and no do not have permission to schedule it for removal on reboot: %v", savedFile, rmDelayErr)
+							} else {
+								fs.Errorf(nil, "%s: could not remove old executable or schedule it for removal on next reboot: %v", savedFile, rmDelayErr)
+							}
+						} else {
+							fs.Infof(nil, "%s: old executable will be removed on next reboot", savedFile)
+						}
+					} else {
+						fs.Errorf(nil, "%s: could not remove old executable: %v", savedFile, rmErr)
+					}
+				} else {
+					fs.Debugf(nil, "%s: The old executable was removed\n", savedFile)
+				}
+			} else {
+				fmt.Printf("The old executable was saved as %s\n", savedFile)
+			}
 			err = nil
 		}
 	}
@@ -304,7 +325,21 @@ func replaceExecutable(targetFile, newFile, savedFile string) error {
 	}
 	if err != nil {
 		if rmErr := os.Remove(newFile); rmErr != nil {
-			fs.Errorf(nil, "%s: could not remove temporary file: %v", newFile, rmErr)
+			if os.IsPermission(rmErr) && runtime.GOOS == "windows" {
+				if rmDelayErr := removeOnReboot(newFile); rmDelayErr != nil {
+					if os.IsPermission(rmDelayErr) {
+						fs.Errorf(nil, "%s: could not remove temporary file and no do not have permission to schedule it for removal on reboot: %v", newFile, rmDelayErr)
+					} else {
+						fs.Errorf(nil, "%s: could not remove temporary file or schedule it for removal on next reboot: %v", newFile, rmDelayErr)
+					}
+				} else {
+					fs.Infof(nil, "%s: temporary file will be removed on next reboot", newFile)
+				}
+			} else {
+				fs.Errorf(nil, "%s: could not remove temporary file: %v", newFile, rmErr)
+			}
+		} else {
+			fs.Debugf(nil, "%s: temporary file was removed\n", newFile)
 		}
 		return err
 	}
