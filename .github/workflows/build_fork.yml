@@ -1,0 +1,68 @@
+name: Build fork
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      manual:
+        required: true
+        default: true
+
+jobs:
+
+  build:
+    name: "Build & Release"
+    if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event.inputs.manual }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: ./src/github.com/rclone/rclone
+
+      - name: Build
+        run: |
+          echo "Preparing environment"
+          export GOPATH=${{ github.workspace }}
+          export PATH=$GOPATH/bin:$PATH
+          echo "runner.workspace: ${{ runner.workspace }}"
+          echo "github.workspace: ${{ github.workspace }}"
+          echo "PWD: $PWD"
+          echo "GOPATH: $GOPATH"
+          echo -e "\nFetching xgo tools"
+          docker pull billziss/xgo-cgofuse
+          GO111MODULE=off go get -v github.com/karalabe/xgo  # don't add to go.mod
+          echo -e "\nExecuting xgo build"
+          xgo \
+              -image=billziss/xgo-cgofuse \
+              -targets=linux/amd64,windows/amd64 \
+              -tags=cmount \
+              -dest=build \
+              -ldflags="-s -X github.com/rclone/rclone/fs.Version=$(echo $GITHUB_REF |cut -d/ -f3)" \
+              ./src/github.com/rclone/rclone
+          echo -e "\nFixing build result root ownership"
+          cp -r build dist  # fix root ownership after xgo (build is owned by root:root, creating dist owned by runner:docker)
+          echo -e "\nDone"
+
+      - name: Result
+        run: |
+          ls -l dist
+
+      - name: Release
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: >
+            dist/rclone-linux-amd64
+            dist/rclone-windows-4.0-amd64.exe
+          gzip: false
+          allow_override: true
