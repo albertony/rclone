@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Go build task: Verify all",
+            "type": "shell",
+            "command": "go build -x ./...",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Go build task: Build debug",
+            "type": "shell",
+            "command": "go build -x -gcflags='all=-N -l'",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Go build task: Build debug (with cmount)",
+            "type": "shell",
+			"command": "go build -x -gcflags='all=-N -l' -tags cmount",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Go build task: Build optimized",
+            "type": "shell",
+            "command": "go build -x -ldflags -s",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Go build task: Build optimized (with cmount)",
+            "type": "shell",
+			"command": "go build -x -ldflags -s -tags cmount",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Go build task: Clean all",
+            "type": "shell",
+            "command": "go clean ./...",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
