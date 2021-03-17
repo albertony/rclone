@@ -1,0 +1,200 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Go build task: Clean all",
+            "type": "shell",
+            "command": "go clean -x ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Verify all (dynamic/cgo)",
+            "type": "shell",
+            "command": "go build -x ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Verify all (dynamic/cgo, cmount)",
+            "type": "shell",
+            "command": "go build -x -tags cmount ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Verify all (dynamic/cgo, cmount, fuse3)",
+            "detail": "The fuse3 tag makes cgofuse build with FUSE3 instead of FUSE2 on Linux.",
+            "type": "shell",
+            "command": "go build -x -tags cmount,fuse3 ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Verify all (static/nocgo)",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Verify all (static/nocgo, cmount)",
+            "detail": "The actual cmount implementation will only be included on Windows where cgofuse has a special mode for static linking.",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -tags cmount ./...",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build debug (dynamic/cgo)",
+            "type": "shell",
+            "command": "go build -x -gcflags 'all=-N -l'",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build debug (dynamic/cgo, cmount)",
+            "type": "shell",
+            "command": "go build -x -gcflags 'all=-N -l' -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build debug (dynamic/cgo, cmount, fuse3)",
+            "detail": "The fuse3 tag makes cgofuse build with FUSE3 instead of FUSE2 on Linux.",
+            "type": "shell",
+            "command": "go build -x -gcflags 'all=-N -l' -tags cmount,fuse3",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build debug (static/nocgo)",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -gcflags 'all=-N -l'",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build debug (static/nocgo, cmount)",
+            "detail": "The actual cmount implementation will only be included on Windows where cgofuse has a special mode for static linking.",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -gcflags 'all=-N -l' -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build default (dynamic/cgo)",
+            "type": "shell",
+            "command": "go build -x",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build default (dynamic/cgo, cmount)",
+            "type": "shell",
+            "command": "go build -x -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build default (dynamic/cgo, cmount, fuse3)",
+            "detail": "The fuse3 tag makes cgofuse build with FUSE3 instead of FUSE2 on Linux.",
+            "type": "shell",
+            "command": "go build -x -tags cmount,fuse3",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build default (static/nocgo)",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build default (static/nocgo, cmount)",
+            "detail": "The actual cmount implementation will only be included on Windows where cgofuse has a special mode for static linking.",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build optimized (dynamic/cgo)",
+            "type": "shell",
+            "command": "go build -x -trimpath -ldflags -s",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build optimized (dynamic/cgo, cmount)",
+            "type": "shell",
+            "command": "go build -x -trimpath -ldflags -s -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build optimized (dynamic/cgo, cmount, fuse3)",
+            "detail": "The fuse3 tag makes cgofuse build with FUSE3 instead of FUSE2 on Linux.",
+            "type": "shell",
+            "command": "go build -x -trimpath -ldflags -s -tags cmount,fuse3",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build optimized (static/nocgo)",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -trimpath -ldflags -s",
+            "group": "build",
+            "problemMatcher": "$go"
+        },
+        {
+            "label": "Go build task: Build optimized (static/nocgo, cmount) - OFFICIAL",
+            "detail": "This corresponds to the official rclone build for Windows and Linux. The actual cmount implementation will only be included on Windows where cgofuse has a special mode for static linking.",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "CGO_ENABLED": "0"
+                }
+            },
+            "command": "go build -x -trimpath -ldflags -s -tags cmount",
+            "group": "build",
+            "problemMatcher": "$go"
+        }
+    ]
+}
