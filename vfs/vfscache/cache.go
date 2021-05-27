@@ -21,6 +21,7 @@ import (
 	"github.com/rclone/rclone/fs/fserrors"
 	"github.com/rclone/rclone/fs/hash"
 	"github.com/rclone/rclone/fs/operations"
+	"github.com/rclone/rclone/lib/encoder"
 	"github.com/rclone/rclone/lib/file"
 	"github.com/rclone/rclone/vfs/vfscache/writeback"
 	"github.com/rclone/rclone/vfs/vfscommon"
@@ -160,13 +161,23 @@ func clean(name string) string {
 
 // toOSPath turns a remote relative name into an OS path in the cache
 func (c *Cache) toOSPath(name string) string {
-	return filepath.Join(c.root, filepath.FromSlash(name))
+	osPath := c.root
+	parts := strings.Split(name, "/")
+	for i := range parts {
+		osPath = filepath.Join(osPath, encoder.OS.FromStandardPath(parts[i]))
+	}
+	return osPath
 }
 
 // toOSPathMeta turns a remote relative name into an OS path in the
 // cache for the metadata
 func (c *Cache) toOSPathMeta(name string) string {
-	return filepath.Join(c.metaRoot, filepath.FromSlash(name))
+	osPath := c.metaRoot
+	parts := strings.Split(name, "/")
+	for i := range parts {
+		osPath = filepath.Join(osPath, encoder.OS.FromStandardPath(parts[i]))
+	}
+	return osPath
 }
 
 // mkdir makes the directory for name in the cache and returns an os
