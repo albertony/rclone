@@ -7,7 +7,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -83,19 +82,15 @@ func New(ctx context.Context, fremote fs.Fs, opt *vfscommon.Options, avFn AddVir
 	fs.Debugf(nil, "vfs cache: root is %q", cacheRootOSPath)
 	cacheRootPath := toStandardPath(cacheRootOSPath)
 
-	cacheRelativePath := fremote.Root() // This is a remote path in standard encoding
-	if runtime.GOOS == "windows" {
-		if strings.HasPrefix(cacheRelativePath, `//?/`) {
-			cacheRelativePath = cacheRelativePath[2:] // Trim off the "//"
-		}
-	}
-	cacheRelativePath = fremote.Name() + "/" + cacheRelativePath
-	cacheRelativeOSPath := toOSPath(cacheRelativePath)
+	remoteName := fremote.Name()
+	remotePath := fremote.Root() // This is a remote path in standard encoding
 
-	cacheDataPath := fmt.Sprintf("%s/vfs/%s", cacheRootPath, cacheRelativePath)
-	cacheMetaPath := fmt.Sprintf("%s/vfsMeta/%s", cacheRootPath, cacheRelativePath)
-	cacheDataOSPath := file.UNCPath(filepath.Join(cacheRootOSPath, "vfs", cacheRelativeOSPath))
-	cacheMetaOSPath := file.UNCPath(filepath.Join(cacheRootOSPath, "vfsMeta", cacheRelativeOSPath))
+	cacheDataPath := fmt.Sprintf("%s/vfs/%s/%s", cacheRootPath, remoteName, remotePath)
+	cacheDataOSPath := file.LocalPath(cacheDataPath, false, encoder.OS)
+
+	cacheMetaPath := fmt.Sprintf("%s/vfsMeta/%s/%s", cacheRootPath, remoteName, remotePath)
+	cacheMetaOSPath := file.LocalPath(cacheMetaPath, false, encoder.OS)
+
 	fs.Debugf(nil, "vfs cache: data root is %q", cacheDataOSPath)
 	fs.Debugf(nil, "vfs cache: metadata root is %q", cacheMetaOSPath)
 
