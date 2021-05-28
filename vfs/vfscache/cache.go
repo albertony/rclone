@@ -21,6 +21,7 @@ import (
 	"github.com/rclone/rclone/fs/fserrors"
 	"github.com/rclone/rclone/fs/hash"
 	"github.com/rclone/rclone/fs/operations"
+	"github.com/rclone/rclone/lib/encoder"
 	"github.com/rclone/rclone/lib/file"
 	"github.com/rclone/rclone/vfs/vfscache/writeback"
 	"github.com/rclone/rclone/vfs/vfscommon"
@@ -74,33 +75,36 @@ type AddVirtualFn func(remote string, size int64, isDir bool) error
 // This starts background goroutines which can be cancelled with the
 // context passed in.
 func New(ctx context.Context, fremote fs.Fs, opt *vfscommon.Options, avFn AddVirtualFn) (*Cache, error) {
-	fName := fremote.Name()
-	fRoot := filepath.FromSlash(fremote.Root())
-	if runtime.GOOS == "windows" {
-		if strings.HasPrefix(fRoot, `\\?`) {
-			fRoot = fRoot[3:]
-		}
-		fRoot = strings.Replace(fRoot, ":", "", -1)
-		// Replace leading ':' if remote was created on the fly as ":backend:/path" as it is illegal in Windows
-		if fName[0] == ':' {
-			fName = "^" + fName[1:]
-		}
-	}
-	cacheDir := config.CacheDir
-	cacheDir, err := filepath.Abs(cacheDir)
+	cacheRootOSPath := config.CacheDir // Assuming string contains a local path in OS encoding
+	cacheRootOSPath, err := filepath.Abs(cacheRootOSPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make --cache-dir absolute")
 	}
-	root := file.UNCPath(filepath.Join(cacheDir, "vfs", fName, fRoot))
-	fs.Debugf(nil, "vfs cache: root is %q", root)
-	metaRoot := file.UNCPath(filepath.Join(cacheDir, "vfsMeta", fName, fRoot))
-	fs.Debugf(nil, "vfs cache: metadata root is %q", root)
+	fs.Debugf(nil, "vfs cache: root is %q", cacheRootOSPath)
+	cacheRootPath := toStandardPath(cacheRootOSPath)
 
-	fcache, err := fscache.Get(ctx, root)
+	cacheRelativePath := fremote.Root() // This is a remote path in standard encoding
+	if runtime.GOOS == "windows" {
+		if strings.HasPrefix(cacheRelativePath, `//?/`) {
+			cacheRelativePath = cacheRelativePath[2:] // Trim off the "//"
+		}
+	}
+	cacheRelativePath = fremote.Name() + "/" + cacheRelativePath
+	cacheRelativeOSPath := toOSPath(cacheRelativePath)
+
+	cacheDataPath := fmt.Sprintf("%s/vfs/%s", cacheRootPath, cacheRelativePath)
+	cacheMetaPath := fmt.Sprintf("%s/vfsMeta/%s", cacheRootPath, cacheRelativePath)
+	cacheDataOSPath := file.UNCPath(filepath.Join(cacheRootOSPath, "vfs", cacheRelativeOSPath))
+	cacheMetaOSPath := file.UNCPath(filepath.Join(cacheRootOSPath, "vfsMeta", cacheRelativeOSPath))
+	fs.Debugf(nil, "vfs cache: data root is %q", cacheDataOSPath)
+	fs.Debugf(nil, "vfs cache: metadata root is %q", cacheMetaOSPath)
+
+	fcache, err := fscache.Get(ctx, cacheDataPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create cache remote")
 	}
-	fcacheMeta, err := fscache.Get(ctx, metaRoot)
+
+	fcacheMeta, err := fscache.Get(ctx, cacheMetaPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create cache meta remote")
 	}
@@ -112,8 +116,8 @@ func New(ctx context.Context, fremote fs.Fs, opt *vfscommon.Options, avFn AddVir
 		fcache:     fcache,
 		fcacheMeta: fcacheMeta,
 		opt:        opt,
-		root:       root,
-		metaRoot:   metaRoot,
+		root:       cacheDataOSPath,
+		metaRoot:   cacheMetaOSPath,
 		item:       make(map[string]*Item),
 		errItems:   make(map[string]error),
 		hashType:   hashType,
@@ -158,15 +162,25 @@ func clean(name string) string {
 	return name
 }
 
+// toStandardPath turns a OS path into a standard/remote path
+func toStandardPath(osPath string) string {
+	return encoder.OS.ToStandardPath(filepath.ToSlash(osPath))
+}
+
+// toOSPath turns a standard/remote path into an OS path
+func toOSPath(standardPath string) string {
+	return filepath.FromSlash(encoder.OS.FromStandardPath(standardPath))
+}
+
 // toOSPath turns a remote relative name into an OS path in the cache
 func (c *Cache) toOSPath(name string) string {
-	return filepath.Join(c.root, filepath.FromSlash(name))
+	return filepath.Join(c.root, toOSPath(name))
 }
 
 // toOSPathMeta turns a remote relative name into an OS path in the
 // cache for the metadata
 func (c *Cache) toOSPathMeta(name string) string {
-	return filepath.Join(c.metaRoot, filepath.FromSlash(name))
+	return filepath.Join(c.metaRoot, toOSPath(name))
 }
 
 // mkdir makes the directory for name in the cache and returns an os
