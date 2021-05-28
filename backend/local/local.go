@@ -272,7 +272,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		dev:    devUnset,
 		lstat:  os.Lstat,
 	}
-	f.root = cleanRootPath(root, f.opt.NoUNC, f.opt.Enc)
+	f.root = file.LocalPath(root, f.opt.NoUNC, f.opt.Enc)
 	f.features = (&fs.Features{
 		CaseInsensitive:         f.caseInsensitive(),
 		CanHaveEmptyDirectories: true,
@@ -1303,35 +1303,6 @@ func (o *Object) lstat() error {
 // Remove an object
 func (o *Object) Remove(ctx context.Context) error {
 	return remove(o.path)
-}
-
-func cleanRootPath(s string, noUNC bool, enc encoder.MultiEncoder) string {
-	if runtime.GOOS == "windows" {
-		if !filepath.IsAbs(s) && !strings.HasPrefix(s, "\\") {
-			s2, err := filepath.Abs(s)
-			if err == nil {
-				s = s2
-			}
-		}
-		s = filepath.ToSlash(s)
-		vol := filepath.VolumeName(s)
-		s = vol + enc.FromStandardPath(s[len(vol):])
-		s = filepath.FromSlash(s)
-
-		if !noUNC {
-			// Convert to UNC
-			s = file.UNCPath(s)
-		}
-		return s
-	}
-	if !filepath.IsAbs(s) {
-		s2, err := filepath.Abs(s)
-		if err == nil {
-			s = s2
-		}
-	}
-	s = enc.FromStandardPath(s)
-	return s
 }
 
 // Check the interfaces are satisfied
