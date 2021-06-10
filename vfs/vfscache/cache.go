@@ -175,12 +175,12 @@ func (c *Cache) mkdir(name string) (string, error) {
 	parent := vfscommon.FindParent(name)
 	leaf := filepath.Base(name)
 	parentPath := c.toOSPath(parent)
-	err := os.MkdirAll(parentPath, 0700)
+	err := file.MkdirAll(parentPath, 0700)
 	if err != nil {
 		return "", errors.Wrap(err, "make cache directory failed")
 	}
 	parentPathMeta := c.toOSPathMeta(parent)
-	err = os.MkdirAll(parentPathMeta, 0700)
+	err = file.MkdirAll(parentPathMeta, 0700)
 	if err != nil {
 		return "", errors.Wrap(err, "make cache meta directory failed")
 	}
@@ -306,7 +306,7 @@ func rename(osOldPath, osNewPath string) error {
 			return errors.Wrapf(err, "Failed to stat destination: %s", osNewPath)
 		}
 		parent := vfscommon.OsFindParent(osNewPath)
-		err = os.MkdirAll(parent, 0700)
+		err = file.MkdirAll(parent, 0700)
 		if err != nil {
 			return errors.Wrapf(err, "Failed to create parent dir: %s", parent)
 		}
