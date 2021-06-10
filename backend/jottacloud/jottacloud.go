@@ -1290,6 +1290,21 @@ func (f *Fs) About(ctx context.Context) (*fs.Usage, error) {
 	return usage, nil
 }
 
+// UserInfo fetches info about the current user
+func (f *Fs) UserInfo(ctx context.Context) (userInfo map[string]string, err error) {
+	cust, err := getCustomerInfo(ctx, f.apiSrv)
+	if err != nil {
+		return nil, err
+	}
+	return map[string]string{
+		"Username":         cust.Username,
+		"Email":            cust.Email,
+		"Name":             cust.Name,
+		"AccountType":      cust.AccountType,
+		"SubscriptionType": cust.SubscriptionType,
+	}, nil
+}
+
 // CleanUp empties the trash
 func (f *Fs) CleanUp(ctx context.Context) error {
 	opts := rest.Opts{
@@ -1615,6 +1630,7 @@ var (
 	_ fs.ListRer      = (*Fs)(nil)
 	_ fs.PublicLinker = (*Fs)(nil)
 	_ fs.Abouter      = (*Fs)(nil)
+	_ fs.UserInfoer   = (*Fs)(nil)
 	_ fs.CleanUpper   = (*Fs)(nil)
 	_ fs.Object       = (*Object)(nil)
 	_ fs.MimeTyper    = (*Object)(nil)
