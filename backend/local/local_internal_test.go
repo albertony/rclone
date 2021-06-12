@@ -13,7 +13,7 @@ import (
 	"github.com/rclone/rclone/fs/config/configmap"
 	"github.com/rclone/rclone/fs/hash"
 	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -31,7 +31,7 @@ func TestUpdatingCheck(t *testing.T) {
 	filePath := "sub dir/local test"
 	r.WriteFile(filePath, "content", time.Now())
 
-	fd, err := file.Open(path.Join(r.LocalName, filePath))
+	fd, err := osutil.Open(path.Join(r.LocalName, filePath))
 	if err != nil {
 		t.Fatalf("failed opening file %q: %v", filePath, err)
 	}

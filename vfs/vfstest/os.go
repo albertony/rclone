@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/vfs"
 )
 
@@ -56,7 +56,7 @@ func (r realOs) Chtimes(name string, atime time.Time, mtime time.Time) error {
 
 // Create
 func (r realOs) Create(name string) (vfs.Handle, error) {
-	fd, err := file.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+	fd, err := osutil.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (r realOs) Open(name string) (vfs.Handle, error) {
 
 // OpenFile
 func (r realOs) OpenFile(name string, flags int, perm os.FileMode) (vfs.Handle, error) {
-	fd, err := file.OpenFile(name, flags, perm)
+	fd, err := osutil.OpenFile(name, flags, perm)
 	if err != nil {
 		return nil, err
 	}

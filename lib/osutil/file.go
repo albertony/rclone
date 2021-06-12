@@ -1,6 +1,7 @@
-// Package file provides a version of os.OpenFile, the handles of
-// which can be renamed and deleted under Windows.
-package file
+// Package osutil provides improvements and additions to built-in package os.
+// E.g. a version of os.OpenFile, the handles of which can be renamed and
+// deleted under Windows.
+package osutil
 
 import "os"
 

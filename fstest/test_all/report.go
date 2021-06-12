@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/skratchdot/open-golang/open"
 )
 
@@ -76,7 +76,7 @@ func NewReport() *Report {
 
 	// Create output directory for logs and report
 	r.LogDir = path.Join(*outputDir, r.DateTime)
-	err = file.MkdirAll(r.LogDir, 0777)
+	err = osutil.MkdirAll(r.LogDir, 0777)
 	if err != nil {
 		log.Fatalf("Failed to make log directory: %v", err)
 	}

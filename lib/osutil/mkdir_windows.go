@@ -1,6 +1,6 @@
 //+build windows
 
-package file
+package osutil
 
 import (
 	"os"
@@ -10,8 +10,9 @@ import (
 
 // MkdirAll creates a directory named path, along with any necessary parents.
 // Except added os prefix on call to IsPathSeparator and additional comments,
-// it is a pure copy of Syncthing's version of os.MkdirAll, which adds check on
-// volume name to avoid trying to create the folder \\? for extended length paths.
+// it is an exact copy of Syncthing's version of os.MkdirAll, which in turn
+// differs from the built-in os.MkdirAll only by an added check on volume name
+// to avoid trying to create the folder \\? for extended length paths.
 // For comparsion, see:
 // https://github.com/syncthing/syncthing/blob/main/lib/fs/basicfs_windows.go
 // https://github.com/golang/go/blob/master/src/os/path.go

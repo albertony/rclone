@@ -1,6 +1,6 @@
 //+build !windows
 
-package file
+package osutil
 
 // UNCPath converts an absolute Windows path to a UNC long path.
 //

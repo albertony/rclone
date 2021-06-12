@@ -1,6 +1,6 @@
 //+build linux
 
-package file
+package osutil
 
 import (
 	"os"

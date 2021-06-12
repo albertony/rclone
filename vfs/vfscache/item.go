@@ -13,7 +13,7 @@ import (
 	"github.com/rclone/rclone/fs"
 	"github.com/rclone/rclone/fs/fserrors"
 	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/lib/ranges"
 	"github.com/rclone/rclone/vfs/vfscache/downloaders"
 	"github.com/rclone/rclone/vfs/vfscache/writeback"
@@ -250,7 +250,7 @@ func (item *Item) _truncate(size int64) (err error) {
 			oFlags |= os.O_CREATE
 		}
 		osPath := item.c.toOSPath(item.name) // No locking in Cache
-		fd, err = file.OpenFile(osPath, oFlags, 0600)
+		fd, err = osutil.OpenFile(osPath, oFlags, 0600)
 		if err != nil && os.IsNotExist(err) {
 			// If the metadata has info but the file doesn't
 			// not exist then it has been externally removed
@@ -258,7 +258,7 @@ func (item *Item) _truncate(size int64) (err error) {
 			item.info.Rs = nil      // show we have no blocks cached
 			item.info.Dirty = false // file can't be dirty if it doesn't exist
 			item._removeMeta("cache file externally deleted")
-			fd, err = file.OpenFile(osPath, os.O_CREATE|os.O_WRONLY, 0600)
+			fd, err = osutil.OpenFile(osPath, os.O_CREATE|os.O_WRONLY, 0600)
 		}
 		if err != nil {
 			return errors.Wrap(err, "vfs cache: truncate: failed to open cache file")
@@ -266,7 +266,7 @@ func (item *Item) _truncate(size int64) (err error) {
 
 		defer fs.CheckClose(fd, &err)
 
-		err = file.SetSparse(fd)
+		err = osutil.SetSparse(fd)
 		if err != nil {
 			fs.Errorf(item.name, "vfs cache: truncate: failed to set as a sparse file: %v", err)
 		}
@@ -460,11 +460,11 @@ func (item *Item) _createFile(osPath string) (err error) {
 		return errors.New("vfs cache item: internal error: didn't Close file")
 	}
 	item.modified = false
-	fd, err := file.OpenFile(osPath, os.O_RDWR, 0600)
+	fd, err := osutil.OpenFile(osPath, os.O_RDWR, 0600)
 	if err != nil {
 		return errors.Wrap(err, "vfs cache item: open failed")
 	}
-	err = file.SetSparse(fd)
+	err = osutil.SetSparse(fd)
 	if err != nil {
 		fs.Errorf(item.name, "vfs cache: failed to set as a sparse file: %v", err)
 	}

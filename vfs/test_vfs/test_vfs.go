@@ -17,7 +17,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/lib/random"
 )
 
@@ -179,7 +179,7 @@ func (t *Test) close() {
 func (t *Test) open() {
 	t.close()
 	t.logf("open")
-	handle, err := file.OpenFile(t.path(), os.O_RDWR|os.O_CREATE, 0666)
+	handle, err := osutil.OpenFile(t.path(), os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		t.errorf("failed to open: %v", err)
 		return
@@ -296,7 +296,7 @@ func main() {
 		log.Fatalf("%s: Syntax [opts] <directory>", os.Args[0])
 	}
 	dir := args[0]
-	_ = file.MkdirAll(dir, 0777)
+	_ = osutil.MkdirAll(dir, 0777)
 
 	var (
 		wg   sync.WaitGroup

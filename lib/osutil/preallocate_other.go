@@ -1,6 +1,6 @@
 //+build !windows,!linux
 
-package file
+package osutil
 
 import "os"
 

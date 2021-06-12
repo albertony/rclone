@@ -1,4 +1,4 @@
-package file
+package osutil
 
 import "errors"
 

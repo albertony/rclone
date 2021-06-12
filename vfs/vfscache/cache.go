@@ -21,7 +21,7 @@ import (
 	"github.com/rclone/rclone/fs/fserrors"
 	"github.com/rclone/rclone/fs/hash"
 	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/vfs/vfscache/writeback"
 	"github.com/rclone/rclone/vfs/vfscommon"
 )
@@ -91,9 +91,9 @@ func New(ctx context.Context, fremote fs.Fs, opt *vfscommon.Options, avFn AddVir
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to make --cache-dir absolute")
 	}
-	root := file.UNCPath(filepath.Join(cacheDir, "vfs", fName, fRoot))
+	root := osutil.UNCPath(filepath.Join(cacheDir, "vfs", fName, fRoot))
 	fs.Debugf(nil, "vfs cache: root is %q", root)
-	metaRoot := file.UNCPath(filepath.Join(cacheDir, "vfsMeta", fName, fRoot))
+	metaRoot := osutil.UNCPath(filepath.Join(cacheDir, "vfsMeta", fName, fRoot))
 	fs.Debugf(nil, "vfs cache: metadata root is %q", root)
 
 	fcache, err := fscache.Get(ctx, root)
@@ -175,12 +175,12 @@ func (c *Cache) mkdir(name string) (string, error) {
 	parent := vfscommon.FindParent(name)
 	leaf := filepath.Base(name)
 	parentPath := c.toOSPath(parent)
-	err := file.MkdirAll(parentPath, 0700)
+	err := osutil.MkdirAll(parentPath, 0700)
 	if err != nil {
 		return "", errors.Wrap(err, "make cache directory failed")
 	}
 	parentPathMeta := c.toOSPathMeta(parent)
-	err = file.MkdirAll(parentPathMeta, 0700)
+	err = osutil.MkdirAll(parentPathMeta, 0700)
 	if err != nil {
 		return "", errors.Wrap(err, "make cache meta directory failed")
 	}
@@ -306,7 +306,7 @@ func rename(osOldPath, osNewPath string) error {
 			return errors.Wrapf(err, "Failed to stat destination: %s", osNewPath)
 		}
 		parent := vfscommon.OsFindParent(osNewPath)
-		err = file.MkdirAll(parent, 0700)
+		err = osutil.MkdirAll(parent, 0700)
 		if err != nil {
 			return errors.Wrapf(err, "Failed to create parent dir: %s", parent)
 		}

@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rclone/rclone/cmd/mountlib"
 	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 )
 
 var isDriveRegex = regexp.MustCompile(`^[a-zA-Z]\:$`)
@@ -60,7 +60,7 @@ func isDefaultPath(l string) bool {
 
 // getUnusedDrive find unused drive letter and returns string with drive letter followed by volume separator.
 func getUnusedDrive() (string, error) {
-	driveLetter := file.FindUnusedDriveLetter()
+	driveLetter := osutil.FindUnusedDriveLetter()
 	if driveLetter == 0 {
 		return "", errors.New("could not find unused drive letter")
 	}

@@ -23,7 +23,7 @@ import (
 	"github.com/rclone/rclone/fs/config/obscure"
 	"github.com/rclone/rclone/fs/fspath"
 	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/lib/random"
 )
 
@@ -275,7 +275,7 @@ func makeConfigPath() string {
 			return configFile
 		}
 		var mkdirErr error
-		if mkdirErr = file.MkdirAll(configDir, os.ModePerm); mkdirErr == nil {
+		if mkdirErr = osutil.MkdirAll(configDir, os.ModePerm); mkdirErr == nil {
 			return configFile
 		}
 		// Problem: Try a fallback location. If we did find a home directory then
@@ -321,7 +321,7 @@ func SetConfigPath(path string) (err error) {
 		cfgPath = ""
 	} else if filepath.Base(path) == noConfigFile {
 		cfgPath = ""
-	} else if err = file.IsReserved(path); err != nil {
+	} else if err = osutil.IsReserved(path); err != nil {
 		return err
 	} else if cfgPath, err = filepath.Abs(path); err != nil {
 		return err

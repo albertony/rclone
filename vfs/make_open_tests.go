@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 )
 
 // Interprets err into a vfs error
@@ -56,7 +56,7 @@ func test(fileName string, flags int, mode string) {
 	if !os.IsNotExist(err) {
 		log.Fatalf("File must not exist")
 	}
-	f, openNonExistentErr := file.OpenFile(fileName, flags, 0666)
+	f, openNonExistentErr := osutil.OpenFile(fileName, flags, 0666)
 
 	var readNonExistentErr error
 	var writeNonExistentErr error
@@ -76,7 +76,7 @@ func test(fileName string, flags int, mode string) {
 	}
 
 	// write the file
-	f, err = file.Create(fileName)
+	f, err = osutil.Create(fileName)
 	if err != nil {
 		log.Fatalf("failed to create: %v", err)
 	}
@@ -92,7 +92,7 @@ func test(fileName string, flags int, mode string) {
 
 	// then open file and try with file existing
 
-	f, openExistingErr := file.OpenFile(fileName, flags, 0666)
+	f, openExistingErr := osutil.OpenFile(fileName, flags, 0666)
 	var readExistingErr error
 	var writeExistingErr error
 	if openExistingErr == nil {
@@ -111,7 +111,7 @@ func test(fileName string, flags int, mode string) {
 	}
 
 	// read the file
-	f, err = file.Open(fileName)
+	f, err = osutil.Open(fileName)
 	if err != nil {
 		log.Fatalf("failed to open: %v", err)
 	}

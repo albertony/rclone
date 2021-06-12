@@ -25,7 +25,7 @@ import (
 	"github.com/rclone/rclone/fs/fserrors"
 	"github.com/rclone/rclone/fs/hash"
 	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/file"
+	"github.com/rclone/rclone/lib/osutil"
 	"github.com/rclone/rclone/lib/readers"
 	"golang.org/x/text/unicode/norm"
 )
@@ -566,7 +566,7 @@ func (f *Fs) PutStream(ctx context.Context, in io.Reader, src fs.ObjectInfo, opt
 // Mkdir creates the directory if it doesn't exist
 func (f *Fs) Mkdir(ctx context.Context, dir string) error {
 	localPath := f.localPath(dir)
-	err := file.MkdirAll(localPath, 0777)
+	err := osutil.MkdirAll(localPath, 0777)
 	if err != nil {
 		return err
 	}
@@ -760,7 +760,7 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 
 	// Create parent of destination
 	dstParentPath := filepath.Dir(dstPath)
-	err = file.MkdirAll(dstParentPath, 0777)
+	err = osutil.MkdirAll(dstParentPath, 0777)
 	if err != nil {
 		return err
 	}
@@ -883,7 +883,7 @@ func (o *Object) Hash(ctx context.Context, r hash.Type) (string, error) {
 
 		if !o.translatedLink {
 			var fd *os.File
-			fd, err = file.Open(o.path)
+			fd, err = osutil.Open(o.path)
 			if fd != nil {
 				in = newFadviseReadCloser(o, fd, 0, 0)
 			}
@@ -1066,7 +1066,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (in io.Read
 		return o.openTranslatedLink(offset, limit)
 	}
 
-	fd, err := file.Open(o.path)
+	fd, err := osutil.Open(o.path)
 	if err != nil {
 		return
 	}
@@ -1094,7 +1094,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (in io.Read
 // mkdirAll makes all the directories needed to store the object
 func (o *Object) mkdirAll() error {
 	dir := filepath.Dir(o.path)
-	return file.MkdirAll(dir, 0777)
+	return osutil.MkdirAll(dir, 0777)
 }
 
 type nopWriterCloser struct {
@@ -1133,13 +1133,13 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 	// If it is a translated link, just read in the contents, and
 	// then create a symlink
 	if !o.translatedLink {
-		f, err := file.OpenFile(o.path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+		f, err := osutil.OpenFile(o.path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 		if err != nil {
 			if runtime.GOOS == "windows" && os.IsPermission(err) {
 				// If permission denied on Windows might be trying to update a
 				// hidden file, in which case try opening without CREATE
 				// See: https://stackoverflow.com/questions/13215716/ioerror-errno-13-permission-denied-when-trying-to-open-hidden-file-in-w-mod
-				f, err = file.OpenFile(o.path, os.O_WRONLY|os.O_TRUNC, 0666)
+				f, err = osutil.OpenFile(o.path, os.O_WRONLY|os.O_TRUNC, 0666)
 				if err != nil {
 					return err
 				}
@@ -1149,10 +1149,10 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 		}
 		if !o.fs.opt.NoPreAllocate {
 			// Pre-allocate the file for performance reasons
-			err = file.PreAllocate(src.Size(), f)
+			err = osutil.PreAllocate(src.Size(), f)
 			if err != nil {
 				fs.Debugf(o, "Failed to pre-allocate: %v", err)
-				if err == file.ErrDiskFull {
+				if err == osutil.ErrDiskFull {
 					_ = f.Close()
 					return err
 				}
@@ -1238,23 +1238,23 @@ func (f *Fs) OpenWriterAt(ctx context.Context, remote string, size int64) (fs.Wr
 		return nil, errors.New("can't open a symlink for random writing")
 	}
 
-	out, err := file.OpenFile(o.path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+	out, err := osutil.OpenFile(o.path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		return nil, err
 	}
 	// Pre-allocate the file for performance reasons
 	if !f.opt.NoPreAllocate {
-		err = file.PreAllocate(size, out)
+		err = osutil.PreAllocate(size, out)
 		if err != nil {
 			fs.Debugf(o, "Failed to pre-allocate: %v", err)
 		}
 	}
-	if !f.opt.NoSparse && file.SetSparseImplemented {
+	if !f.opt.NoSparse && osutil.SetSparseImplemented {
 		sparseWarning.Do(func() {
 			fs.Infof(nil, "Writing sparse files: use --local-no-sparse or --multi-thread-streams 0 to disable")
 		})
 		// Set the file to be a sparse file (important on Windows)
-		err = file.SetSparse(out)
+		err = osutil.SetSparse(out)
 		if err != nil {
 			fs.Errorf(o, "Failed to set sparse: %v", err)
 		}
@@ -1319,7 +1319,7 @@ func cleanRootPath(s string, noUNC bool, enc encoder.MultiEncoder) string {
 
 		if !noUNC {
 			// Convert to UNC
-			s = file.UNCPath(s)
+			s = osutil.UNCPath(s)
 		}
 		return s
 	}
