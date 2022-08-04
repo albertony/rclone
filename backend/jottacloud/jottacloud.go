@@ -914,6 +914,28 @@ func getOAuthClient(ctx context.Context, name string, m configmap.Mapper, versio
 	return oAuthClient, ts, nil
 }
 
+// getTokenUser extracts user information from token
+//
+// Assuming the token is a JWT. Only the access and id tokens
+// contain the relevant information, not the refresh token,
+// i.e. works with AccessToken and IDToken from TokenJSON.
+func getTokenUserInfo(token string) (info *api.TokenUserInfo, err error) {
+	var parts = strings.Split(token, ".")
+	if len(parts) != 3 { // A valid JWT should have 3 parts separated by "." (header, payload, signature)
+		return nil, fmt.Errorf("string is not a token")
+	}
+	payloadBytes, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return nil, err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(payloadBytes))
+	err = decoder.Decode(&info)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
+}
+
 // NewFs constructs an Fs from the path, container:path
 func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, error) {
 	// Check config version
@@ -965,11 +987,33 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		return err
 	})
 
-	cust, err := getCustomerInfo(ctx, f.apiSrv)
-	if err != nil {
-		return nil, err
+	// Set endpoints.
+	// Endpoints need username: Previously it was always retrieved with a CustomerInfo
+	// request, but we now try to avoid this request by extracting it from the token
+	// instead. Note that legacy auth also stores a username in config, but this is
+	// user input that may be an email address. Endpoints must have the real/internal
+	// username.
+	if version == configVersion {
+		token, err := ts.Token()
+		if err != nil {
+			return nil, err
+		}
+		user, err := getTokenUserInfo(token.AccessToken)
+		if err != nil {
+			fs.Debugf(nil, "Unable to extract username from token: %w", err)
+		} else {
+			fs.Debugf(nil, "Using username extracted from token: %s", user.Username)
+			f.user = user.Username
+		}
 	}
-	f.user = cust.Username
+	if f.user == "" {
+		cust, err := getCustomerInfo(ctx, f.apiSrv)
+		if err != nil {
+			return nil, fmt.Errorf("couldn't get username: %w", err)
+		}
+		fs.Debugf(nil, "Retrieved username from customer info request: %s", cust.Username)
+		f.user = cust.Username
+	}
 	f.setEndpoints()
 
 	if root != "" && !rootIsDir {

@@ -125,6 +125,16 @@ type TokenJSON struct {
 	Scope            string `json:"scope"`
 }
 
+// TokenUserInfo is the struct representing the user info encoded
+// in the AccessToken and IDToken JWTs from TokenJSON, ignoring
+// all other information.
+type TokenUserInfo struct {
+	Name     string `json:"name"`
+	Realm    string `json:"realm"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
 // JSON structures returned by new API
 
 // AllocateFileRequest to prepare an upload to Jottacloud
