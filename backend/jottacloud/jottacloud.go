@@ -273,7 +273,11 @@ sync or the backup section, for example, you must choose yes.`)
 			m.Set(configMountpoint, "")
 			return fs.ConfigGoto("end")
 		}
-		oAuthClient, _, err := getOAuthClient(ctx, name, m)
+		version, err := getConfigVersion(ctx, m)
+		if err != nil {
+			return nil, err
+		}
+		oAuthClient, _, err := getOAuthClient(ctx, name, m, version)
 		if err != nil {
 			return nil, err
 		}
@@ -311,7 +315,11 @@ a new by entering a unique name.`, defaultDevice)
 	case "choose_device_result":
 		device := config.Result
 
-		oAuthClient, _, err := getOAuthClient(ctx, name, m)
+		version, err := getConfigVersion(ctx, m)
+		if err != nil {
+			return nil, err
+		}
+		oAuthClient, _, err := getOAuthClient(ctx, name, m, version)
 		if err != nil {
 			return nil, err
 		}
@@ -371,7 +379,11 @@ You may create a new by entering a unique name.`, device)
 	case "choose_device_mountpoint":
 		mountpoint := config.Result
 
-		oAuthClient, _, err := getOAuthClient(ctx, name, m)
+		version, err := getConfigVersion(ctx, m)
+		if err != nil {
+			return nil, err
+		}
+		oAuthClient, _, err := getOAuthClient(ctx, name, m, version)
 		if err != nil {
 			return nil, err
 		}
@@ -851,13 +863,7 @@ func getConfigVersion(ctx context.Context, m configmap.Mapper) (int, error) {
 	return version, err
 }
 
-func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuthClient *http.Client, ts *oauthutil.TokenSource, err error) {
-	// Check config version
-	ver, err := getConfigVersion(ctx, m)
-	if err != nil {
-		return nil, nil, err
-	}
-
+func getOAuthClient(ctx context.Context, name string, m configmap.Mapper, version int) (oAuthClient *http.Client, ts *oauthutil.TokenSource, err error) {
 	baseClient := fshttp.NewClient(ctx)
 	oauthConfig := &oauth2.Config{
 		Endpoint: oauth2.Endpoint{
@@ -865,7 +871,7 @@ func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuth
 			TokenURL: defaultTokenURL,
 		},
 	}
-	if ver == configVersion {
+	if version == configVersion {
 		oauthConfig.ClientID = defaultClientID
 		// if custom endpoints are set use them else stick with defaults
 		if tokenURL, ok := m.Get(configTokenURL); ok {
@@ -873,7 +879,7 @@ func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuth
 			// jottacloud is weird. we need to use the tokenURL as authURL
 			oauthConfig.Endpoint.AuthURL = tokenURL
 		}
-	} else if ver == legacyConfigVersion {
+	} else if version == legacyConfigVersion {
 		clientID, ok := m.Get(configClientID)
 		if !ok {
 			clientID = legacyClientID
@@ -896,6 +902,8 @@ func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuth
 		} else {
 			fs.Debugf(name+":", "Couldn't add request filter - uploads will fail")
 		}
+	} else {
+		return nil, nil, errors.New("unexpected config version - please reconfigure this backend")
 	}
 
 	// Create OAuth Client
@@ -908,14 +916,20 @@ func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuth
 
 // NewFs constructs an Fs from the path, container:path
 func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, error) {
-	// Parse config into Options struct
-	opt := new(Options)
-	err := configstruct.Set(m, opt)
+	// Check config version
+	version, err := getConfigVersion(ctx, m)
 	if err != nil {
 		return nil, err
 	}
 
-	oAuthClient, ts, err := getOAuthClient(ctx, name, m)
+	// Parse config into Options struct
+	opt := new(Options)
+	err = configstruct.Set(m, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	oAuthClient, ts, err := getOAuthClient(ctx, name, m, version)
 	if err != nil {
 		return nil, err
 	}
