@@ -835,19 +835,27 @@ func grantTypeFilter(req *http.Request) {
 	}
 }
 
+// getConfigVersion gets config version from config, converts and verifies it
+func getConfigVersion(ctx context.Context, m configmap.Mapper) (int, error) {
+	ver, ok := m.Get("configVersion")
+	if !ok {
+		return 0, errors.New("outdated config - please reconfigure this backend")
+	}
+	version, err := strconv.Atoi(ver)
+	if err != nil {
+		return 0, errors.New("invalid config version - please reconfigure this backend")
+	}
+	if version != configVersion && version != legacyConfigVersion {
+		return 0, errors.New("unexpected config version - please reconfigure this backend")
+	}
+	return version, err
+}
+
 func getOAuthClient(ctx context.Context, name string, m configmap.Mapper) (oAuthClient *http.Client, ts *oauthutil.TokenSource, err error) {
 	// Check config version
-	var ver int
-	version, ok := m.Get("configVersion")
-	if ok {
-		ver, err = strconv.Atoi(version)
-		if err != nil {
-			return nil, nil, errors.New("failed to parse config version")
-		}
-		ok = (ver == configVersion) || (ver == legacyConfigVersion)
-	}
-	if !ok {
-		return nil, nil, errors.New("outdated config - please reconfigure this backend")
+	ver, err := getConfigVersion(ctx, m)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	baseClient := fshttp.NewClient(ctx)
