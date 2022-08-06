@@ -477,17 +477,15 @@ type Options struct {
 
 // Fs represents a remote jottacloud
 type Fs struct {
-	name             string
-	root             string
-	user             string
-	opt              Options
-	features         *fs.Features
-	fileEndpoint     string
-	allocateEndpoint string
-	jfsSrv           *rest.Client
-	apiSrv           *rest.Client
-	pacer            *fs.Pacer
-	tokenRenewer     *oauthutil.Renew // renew the token on expiry
+	name         string
+	root         string
+	user         string
+	opt          Options
+	features     *fs.Features
+	jfsSrv       *rest.Client
+	apiSrv       *rest.Client
+	pacer        *fs.Pacer
+	tokenRenewer *oauthutil.Renew // renew the token on expiry
 }
 
 // Object describes a jottacloud object
@@ -527,23 +525,6 @@ func (f *Fs) String() string {
 // Features returns the optional features of this Fs
 func (f *Fs) Features() *fs.Features {
 	return f.features
-}
-
-// joinPath joins two path/url elements
-//
-// Does not perform clean on the result like path.Join does,
-// which breaks urls by changing prefix "https://" into "https:/".
-func joinPath(base string, rel string) string {
-	if rel == "" {
-		return base
-	}
-	if strings.HasSuffix(base, "/") {
-		return base + strings.TrimPrefix(rel, "/")
-	}
-	if strings.HasPrefix(rel, "/") {
-		return strings.TrimSuffix(base, "/") + rel
-	}
-	return base + "/" + rel
 }
 
 // retryErrorCodes is a slice of error codes that we will retry
@@ -769,18 +750,6 @@ func createMountPoint(ctx context.Context, srv *rest.Client, path string) (info 
 	return info, nil
 }
 
-// setEndpoints generates the API endpoints
-func (f *Fs) setEndpoints() {
-	if f.opt.Device == "" {
-		f.opt.Device = defaultDevice
-	}
-	if f.opt.Mountpoint == "" {
-		f.opt.Mountpoint = defaultMountpoint
-	}
-	f.fileEndpoint = path.Join(f.user, f.opt.Device, f.opt.Mountpoint)
-	f.allocateEndpoint = path.Join("jfs", f.opt.Device, f.opt.Mountpoint)
-}
-
 // readMetaDataForPath reads the metadata from the path
 func (f *Fs) readMetaDataForPath(ctx context.Context, path string) (info *api.JottaFile, err error) {
 	opts := rest.Opts{
@@ -829,6 +798,23 @@ func errorHandler(resp *http.Response) error {
 	return errResponse
 }
 
+// joinPath joins two path/url elements
+//
+// Does not perform clean on the result like path.Join does,
+// which breaks urls by changing prefix "https://" into "https:/".
+func joinPath(base string, rel string) string {
+	if rel == "" {
+		return base
+	}
+	if strings.HasSuffix(base, "/") {
+		return base + strings.TrimPrefix(rel, "/")
+	}
+	if strings.HasPrefix(rel, "/") {
+		return strings.TrimSuffix(base, "/") + rel
+	}
+	return base + "/" + rel
+}
+
 // Jottacloud wants '+' to be URL encoded even though the RFC states it's not reserved
 func urlPathEscape(in string) string {
 	return strings.ReplaceAll(rest.URLPathEscape(in), "+", "%2B")
@@ -845,28 +831,18 @@ func (f *Fs) filePathRelativeToUserRaw(file string) string {
 // filePathRaw returns an unescaped file path (f.root, file)
 // Optionally made absolute by prefixing with "/", typically required when used
 // as request parameter instead of the path (which is relative to some root url).
-func (f *Fs) filePathRaw(file string, absolute bool) string {
-	prefix := ""
-	if absolute {
-		prefix = "/"
-	}
-	return path.Join(prefix, f.fileEndpoint, f.opt.Enc.FromStandardPath(path.Join(f.root, file)))
+func (f *Fs) filePathRaw(file string) string {
+	return path.Join(f.user, f.filePathRelativeToUserRaw(file))
 }
 
 // filePath returns an escaped file path (f.root, file)
 func (f *Fs) filePath(file string) string {
-	return urlPathEscape(f.filePathRaw(file, false))
+	return urlPathEscape(f.filePathRaw(file))
 }
 
 // allocatePathRaw returns an unescaped allocate file path (f.root, file)
-// Optionally made absolute by prefixing with "/", typically required when used
-// as request parameter instead of the path (which is relative to some root url).
-func (f *Fs) allocatePathRaw(file string, absolute bool) string {
-	prefix := ""
-	if absolute {
-		prefix = "/"
-	}
-	return path.Join(prefix, f.allocateEndpoint, f.opt.Enc.FromStandardPath(path.Join(f.root, file)))
+func (f *Fs) allocatePathRaw(file string) string {
+	return path.Join("/jfs", f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(path.Join(f.root, file)))
 }
 
 // publicLinkURL returns a complete direct download url for a shared file, or "" if not shared
@@ -1024,7 +1000,12 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		return nil, err
 	}
 	f.user = cust.Username
-	f.setEndpoints()
+	if f.opt.Device == "" {
+		f.opt.Device = defaultDevice
+	}
+	if f.opt.Mountpoint == "" {
+		f.opt.Mountpoint = defaultMountpoint
+	}
 
 	if root != "" && !rootIsDir {
 		// Check to see if the root actually an existing file
@@ -1458,7 +1439,7 @@ func (f *Fs) copyOrMove(ctx context.Context, method, src, dest string) (info *ap
 		Parameters: url.Values{},
 	}
 
-	opts.Parameters.Set(method, f.filePathRaw(dest, true))
+	opts.Parameters.Set(method, path.Join("/", f.filePathRaw(dest)))
 
 	var resp *http.Response
 	err = f.pacer.Call(func() (bool, error) {
@@ -1571,7 +1552,7 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 		return fs.ErrorDirExists
 	}
 
-	_, err = f.copyOrMove(ctx, "mvDir", path.Join(f.fileEndpoint, f.opt.Enc.FromStandardPath(srcPath))+"/", dstRemote)
+	_, err = f.copyOrMove(ctx, "mvDir", path.Join(f.user, f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(srcPath))+"/", dstRemote)
 
 	if err != nil {
 		return fmt.Errorf("couldn't move directory: %w", err)
@@ -1581,12 +1562,13 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 
 // PublicLink generates a public link to the remote path (usually readable by anyone)
 func (f *Fs) PublicLink(ctx context.Context, remote string, expire fs.Duration, unlink bool) (link string, err error) {
+	path := f.filePathRaw(remote)
+	fs.Debugf(nil, "Generating public link for path: %s", path)
 	opts := rest.Opts{
 		Method:     "GET",
-		Path:       f.filePath(remote),
+		Path:       urlPathEscape(path),
 		Parameters: url.Values{},
 	}
-
 	if unlink {
 		opts.Parameters.Set("mode", "disableShare")
 	} else {
@@ -1594,6 +1576,10 @@ func (f *Fs) PublicLink(ctx context.Context, remote string, expire fs.Duration, 
 	}
 
 	var resp *http.Response
+	// Parsing response into a JottaFile, but it may not necessarily represent a file;
+	// it can be file, folder, mountpoint or device - whatever the path points to.
+	// Here we only need the PublicURI and PublicSharePath properties of the response,
+	// and since they are defined on JottaFile we just use that regardless.
 	var result api.JottaFile
 	err = f.pacer.Call(func() (bool, error) {
 		resp, err = f.jfsSrv.CallXML(ctx, &opts, nil, &result)
@@ -1992,7 +1978,7 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 		Created:  createdTime,
 		Modified: modTime,
 		Md5:      md5String,
-		Path:     o.fs.allocatePathRaw(o.remote, true),
+		Path:     o.fs.allocatePathRaw(o.remote),
 	}
 
 	// send it
