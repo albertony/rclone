@@ -778,7 +778,7 @@ func (f *Fs) setEndpoints() {
 		f.opt.Mountpoint = defaultMountpoint
 	}
 	f.fileEndpoint = path.Join(f.user, f.opt.Device, f.opt.Mountpoint)
-	f.allocateEndpoint = path.Join("/jfs", f.opt.Device, f.opt.Mountpoint)
+	f.allocateEndpoint = path.Join("jfs", f.opt.Device, f.opt.Mountpoint)
 }
 
 // readMetaDataForPath reads the metadata from the path
