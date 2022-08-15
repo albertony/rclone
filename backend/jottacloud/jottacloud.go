@@ -16,7 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
+	stdpath "path"
 	"strconv"
 	"strings"
 	"time"
@@ -35,6 +35,7 @@ import (
 	"github.com/rclone/rclone/lib/encoder"
 	"github.com/rclone/rclone/lib/oauthutil"
 	"github.com/rclone/rclone/lib/pacer"
+	"github.com/rclone/rclone/lib/path"
 	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
 )
@@ -383,7 +384,7 @@ a new by entering a unique name.`, defaultDevice)
 		var dev *api.JottaDevice
 		if isNew {
 			fs.Debugf(nil, "Creating new device: %s", device)
-			dev, err = createDevice(ctx, jfsSrv, path.Join(cust.Username, device))
+			dev, err = createDevice(ctx, jfsSrv, path.Create(cust.Username, device))
 			if err != nil {
 				return nil, err
 			}
@@ -391,7 +392,7 @@ a new by entering a unique name.`, defaultDevice)
 		m.Set(configDevice, device)
 
 		if !isNew {
-			dev, err = getDeviceInfo(ctx, jfsSrv, path.Join(cust.Username, device))
+			dev, err = getDeviceInfo(ctx, jfsSrv, path.Create(cust.Username, device))
 			if err != nil {
 				return nil, err
 			}
@@ -430,7 +431,7 @@ You may create a new by entering a unique name.`, device)
 
 		device, _ := m.Get(configDevice)
 
-		dev, err := getDeviceInfo(ctx, jfsSrv, path.Join(cust.Username, device))
+		dev, err := getDeviceInfo(ctx, jfsSrv, path.Create(cust.Username, device))
 		if err != nil {
 			return nil, err
 		}
@@ -448,7 +449,7 @@ You may create a new by entering a unique name.`, device)
 				return nil, fmt.Errorf("custom mountpoints not supported on built-in %s device: %w", defaultDevice, err)
 			}
 			fs.Debugf(nil, "Creating new mountpoint: %s", mountpoint)
-			_, err := createMountPoint(ctx, jfsSrv, path.Join(cust.Username, device, mountpoint))
+			_, err := createMountPoint(ctx, jfsSrv, path.Create(cust.Username, device, mountpoint))
 			if err != nil {
 				return nil, err
 			}
@@ -798,23 +799,6 @@ func errorHandler(resp *http.Response) error {
 	return errResponse
 }
 
-// joinPath joins two path/url elements
-//
-// Does not perform clean on the result like path.Join does,
-// which breaks urls by changing prefix "https://" into "https:/".
-func joinPath(base string, rel string) string {
-	if rel == "" {
-		return base
-	}
-	if strings.HasSuffix(base, "/") {
-		return base + strings.TrimPrefix(rel, "/")
-	}
-	if strings.HasPrefix(rel, "/") {
-		return strings.TrimSuffix(base, "/") + rel
-	}
-	return base + "/" + rel
-}
-
 // Jottacloud wants '+' to be URL encoded even though the RFC states it's not reserved
 func urlPathEscape(in string) string {
 	return strings.ReplaceAll(rest.URLPathEscape(in), "+", "%2B")
@@ -825,14 +809,14 @@ func urlPathEscape(in string) string {
 // the username. Mostly for information purposes, requests needs the username
 // prefix as returned by filePathRaw.
 func (f *Fs) filePathRelativeToUserRaw(file string) string {
-	return path.Join(f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(path.Join(f.root, file)))
+	return path.Create(f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(stdpath.Join(f.root, file)))
 }
 
 // filePathRaw returns an unescaped file path (f.root, file)
 // Optionally made absolute by prefixing with "/", typically required when used
 // as request parameter instead of the path (which is relative to some root url).
 func (f *Fs) filePathRaw(file string) string {
-	return path.Join(f.user, f.filePathRelativeToUserRaw(file))
+	return path.Create(f.user, f.filePathRelativeToUserRaw(file))
 }
 
 // filePath returns an escaped file path (f.root, file)
@@ -842,7 +826,7 @@ func (f *Fs) filePath(file string) string {
 
 // allocatePathRaw returns an unescaped allocate file path (f.root, file)
 func (f *Fs) allocatePathRaw(file string) string {
-	return path.Join("/jfs", f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(path.Join(f.root, file)))
+	return "jfs/" + path.Create(f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(stdpath.Join(f.root, file)))
 }
 
 // publicLinkURL returns a complete direct download url for a shared file, or "" if not shared
@@ -850,7 +834,7 @@ func (f *Fs) publicLinkURL(ctx context.Context, publicURI string) string {
 	if publicURI == "" {
 		return ""
 	}
-	return joinPath(wwwURL, fmt.Sprintf("opin/io/downloadPublic/%s/%s", f.user, publicURI))
+	return path.Create(wwwURL, "opin/io/downloadPublic", f.user, publicURI)
 }
 
 // publicLinkURLWeb returns a complete web download url for a shared file, or "" if not shared
@@ -858,7 +842,7 @@ func (f *Fs) publicLinkURLWeb(ctx context.Context, publicSharePath string) strin
 	if publicSharePath == "" {
 		return ""
 	}
-	return joinPath(wwwURL, publicSharePath)
+	return path.Create(wwwURL, publicSharePath)
 }
 
 // Jottacloud requires the grant_type 'refresh_token' string
@@ -1009,8 +993,8 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 
 	if root != "" && !rootIsDir {
 		// Check to see if the root actually an existing file
-		remote := path.Base(root)
-		f.root = path.Dir(root)
+		remote := stdpath.Base(root)
+		f.root = stdpath.Dir(root)
 		if f.root == "." {
 			f.root = ""
 		}
@@ -1121,7 +1105,7 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
 	for i := range result.Folders {
 		item := &result.Folders[i]
 		if f.validFolder(item) {
-			remote := path.Join(dir, f.opt.Enc.ToStandardName(item.Name))
+			remote := stdpath.Join(dir, f.opt.Enc.ToStandardName(item.Name))
 			d := fs.NewDir(remote, time.Time(item.ModifiedAt))
 			entries = append(entries, d)
 		}
@@ -1130,7 +1114,7 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
 	for i := range result.Files {
 		item := &result.Files[i]
 		if f.validFile(item) {
-			remote := path.Join(dir, f.opt.Enc.ToStandardName(item.Name))
+			remote := stdpath.Join(dir, f.opt.Enc.ToStandardName(item.Name))
 			if o, err := f.newObjectWithInfo(ctx, remote, item); err == nil {
 				entries = append(entries, o)
 			}
@@ -1168,7 +1152,7 @@ func parseListRStream(ctx context.Context, r io.Reader, filesystem *Fs, callback
 		return callback(&Object{
 			hasMetaData: true,
 			fs:          filesystem,
-			remote:      filesystem.opt.Enc.ToStandardPath(path.Join(f.Path, f.Name)),
+			remote:      filesystem.opt.Enc.ToStandardPath(stdpath.Join(f.Path, f.Name)),
 			size:        f.Size,
 			md5:         f.Checksum,
 			createTime:  time.Time(f.Created),
@@ -1179,7 +1163,7 @@ func parseListRStream(ctx context.Context, r io.Reader, filesystem *Fs, callback
 	// liststream paths are /mountpoint/root/path
 	// so the returned paths should have /mountpoint/root/ trimmed
 	// as the caller is expecting path.
-	pathPrefix := filesystem.opt.Enc.FromStandardPath(path.Join("/", filesystem.opt.Mountpoint, filesystem.root))
+	pathPrefix := filesystem.opt.Enc.FromStandardPath(stdpath.Join("/", filesystem.opt.Mountpoint, filesystem.root))
 	trimPathPrefix := func(p string) string {
 		p = strings.TrimPrefix(p, pathPrefix)
 		p = strings.TrimPrefix(p, "/")
@@ -1318,7 +1302,7 @@ func (f *Fs) Put(ctx context.Context, in io.Reader, src fs.ObjectInfo, options .
 func (f *Fs) mkParentDir(ctx context.Context, dirPath string) error {
 	// defer log.Trace(dirPath, "")("")
 	// chop off trailing / if it exists
-	parent := path.Dir(strings.TrimSuffix(dirPath, "/"))
+	parent := stdpath.Dir(strings.TrimSuffix(dirPath, "/"))
 	if parent == "." {
 		parent = ""
 	}
@@ -1334,7 +1318,7 @@ func (f *Fs) Mkdir(ctx context.Context, dir string) error {
 // purgeCheck removes the root directory, if check is set then it
 // refuses to do so if it has anything in
 func (f *Fs) purgeCheck(ctx context.Context, dir string, check bool) (err error) {
-	root := path.Join(f.root, dir)
+	root := stdpath.Join(f.root, dir)
 	if root == "" {
 		return errors.New("can't purge root directory")
 	}
@@ -1439,7 +1423,7 @@ func (f *Fs) copyOrMove(ctx context.Context, method, src, dest string) (info *ap
 		Parameters: url.Values{},
 	}
 
-	opts.Parameters.Set(method, path.Join("/", f.filePathRaw(dest)))
+	opts.Parameters.Set(method, "/"+f.filePathRaw(dest))
 
 	var resp *http.Response
 	err = f.pacer.Call(func() (bool, error) {
@@ -1532,8 +1516,8 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 		fs.Debugf(srcFs, "Can't move directory - not same remote type")
 		return fs.ErrorCantDirMove
 	}
-	srcPath := path.Join(srcFs.root, srcRemote)
-	dstPath := path.Join(f.root, dstRemote)
+	srcPath := stdpath.Join(srcFs.root, srcRemote)
+	dstPath := stdpath.Join(f.root, dstRemote)
 
 	// Refuse to move to or from the root
 	if srcPath == "" || dstPath == "" {
@@ -1552,7 +1536,7 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 		return fs.ErrorDirExists
 	}
 
-	_, err = f.copyOrMove(ctx, "mvDir", path.Join(f.user, f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(srcPath))+"/", dstRemote)
+	_, err = f.copyOrMove(ctx, "mvDir", path.Create(f.user, f.opt.Device, f.opt.Mountpoint, f.opt.Enc.FromStandardPath(srcPath))+"/", dstRemote)
 
 	if err != nil {
 		return fmt.Errorf("couldn't move directory: %w", err)
