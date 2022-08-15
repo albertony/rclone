@@ -1,4 +1,4 @@
-// Package path complements standard library package with same name with
+// Package path complements standard library package with same name, adding
 // some additional utility routines for manipulating slash-separated paths.
 //
 // The path package should only be used for paths separated by forward slashes,
@@ -14,13 +14,8 @@ import (
 
 // Create concatenates any number of path/url elements, inserting a slash between.
 //
-// The slash is inserted unconditionally. This makes it suitable for building a
-// path from basic name elements not containing slashes, or joining a path element
-// known to not end with a slash with a name or other path element known to not
-// start with a slash.
-//
-// This function is simply calling [strings.Join] with slash ("/") as hard-coded
-// delimiter:
+// The slash is inserted unconditionally. This function is simply an alias for
+// [strings.Join] with slash ("/") as hard-coded delimiter:
 //
 //	strings.Join(elems, "/")
 //
@@ -28,74 +23,96 @@ import (
 //
 //	a + "/" + b + "/" + c
 //
-// If one element ends with a slash and/or the following element starts with a
-// slash, there will two or three consecutive slashes in the joint. If it is known
-// which of the elements do have a leading or trailing slash, then a tailored
-// concatenation statement (a + b + "/" + c) will be perfect. If it is unknown
-// whether the elements contain leading/trailing slashes, then you should
-// use [JoinOnly] instead.
+// This makes it suitable for building a path from basic name elements not
+// containing slashes. It can also be used to join paths containing slash, if it is
+// known that no elements (except possibly the last) end with a slash, and no
+// elements (except possibly the first) starts with a slash. For cases where this
+// is not true, the result will contain two or three consecutive slashes in the
+// joint. If it it known which of the elements do have leading and/or trailing
+// slash, then a tailored concatenation statement would be needed:
 //
-// The result will not be cleaned either, i.e. multiple consecutive slashes in
-// either of the elements, or elements such as "." or "..", will be kept
-// unresolved. Call [path.Clean] from the standard library on the result, or
-// use [path.Join] from the standard library instead, if such processing is
-// needed.
+//	a + b + "/" + c
 //
-// The performance penalty is very minimal, it's directly comparable to a single-
-// statement concatenation. This function is implemented as a single call to
-// [strings.Join], which is a simple utility function based on the
-// [strings.Builder] type, which in turn is a performance oriented wrapper over
-// a byte slice buffer. Assuming standard compiler optimizations are enabled,
-// the function call to this function will be inlined and also most of the calls
-// that strings.Join does to strings.Builder functions. There is only a single
-// memory allocation, of minimal size, identical to what you get with a plain
-// single-statement concatenation.
+// The function [JoinOnly] can then instead be used, as it will handle any such
+// cases. Also, it handles the case when it is not known whether the elements
+// contain leading/trailing slashes, as it checks and inserts slash only when
+// necessary. There is very little difference in performance, if any at all, so you
+// may in fact simply use [JoinOnly] for all of the above cases.
+//
+// Unlike what is the case with the standard library function [path.Join], the
+// result will not be "cleaned". Standard library functions [path.Clean] or
+// [path.Join] must be used for this, see documentation of [JoinOnly] for more
+// details.
+//
+// The performance of this function should be close to optimal, except if hand-
+// writing an implementation using low-level pointer operations etc. Performance
+// is directly comparable to a corresponding single-statement concatenation. This
+// function is implemented as a single call to [strings.Join], which is a simple
+// utility function based on the [strings.Builder] type, which in turn is a
+// performance oriented wrapper over a byte slice buffer. Assuming standard
+// compiler optimizations are enabled, the function call to this function will be
+// inlined and also most of the calls that [strings.Join] does to [strings.Builder]
+// functions. It will perform only a single memory allocation, of minimal size,
+// identical to what you get with a plain single-statement concatenation.
 func Create(elem ...string) string {
 	return strings.Join(elem, "/")
 }
 
 // JoinOnly concatenates any number of path/url elements, while ensuring slash
-// separated.
+// separated. Empty elements are ignored.
 //
-// The slash is inserted conditionally, unlike [Create] but more like the standard
-// library [path.Join]. If the first element ends with a slash and/or the second
-// element starts with a slash, the joined result will only have a single slash
-// between the parts. But it does not perform clean on the result, like [path.Join]
-// from the standard library does, nor does it parse it as an URL. This means if
-// there are multiple consecutive slashes in either of the elements, then so will
-// also the result, and also any "." or ".." elements will also be kept unresolved.
-// Call [path.Clean] from the standard library on the result, or use [path.Join]
-// from the standard library instead, if such processing is needed.
-//
-// The result when called with two non-zero length arguments is the the same as
-// you would get from:
+// The slash is inserted conditionally, unlike [Create] but more similar to the
+// standard library function [path.Join] (though there are other differences, as
+// described below). The result when called with two non-zero length arguments is
+// the the same as you would get from:
 //
 //	strings.TrimSuffix(a, "/") + "/" + strings.TrimPrefix(b, "/")
 //
-// And for three non-zero length arguments arguments, it is the same as:
+// And for three non-zero length arguments arguments:
 //
 //	strings.TrimSuffix(a, "/") + "/" + strings.TrimPrefix(strings.TrimSuffix(b, "/"), "/") + "/" + strings.TrimPrefix(c, "/")
 //
-// The performance penalty is very minimal, it's directly comparable to [Create],
-// which effectively just an alias for [strings.Join], and also to a basic single-
-// statement concatenation. The implementation is based on the [strings.Builder]
-// type, which is a performance oriented wrapper over a byte slice buffer, same
-// as used by the [strings.Join] function internally. Assuming standard compiler
-// optimizations are enabled, the calls to strings.Builder functions will be
-// inlined. There is only a single memory allocation, of minimal size, identical
-// to [Create], same as what you get with a plain single-statement concatenation.
+// If the first element ends with a slash and/or the second element starts with a
+// slash, the joined result will only have a single slash between the elements.
+// This makes it suitable for building a path from elements where it is not known
+// if they contain leading/trailing slashes. If it is known that none of the
+// elements start or end with a slash, then [Create] could be used instead. It
+// inserts a slash unconditionally. Though, there is very little difference in
+// performance, if any at all, so you may in fact simply use [JoinOnly] for these
+// cases as well.
 //
-// This avoids breaking URLs: When working with complete urls, [path.Join] cannot
-// be used because it will "clean" the two slashes following the scheme component,
-// e.g. change "https://" into "https:/", and also it will remove any trailing path
-// separators, which may make a difference in some cases. You could use [net.URL],
-// but is slower and more cumbersome to use for simple concatenations (at least
-// until go1.19 where a new function url.JoinPath was introduced).
+// Unlike what is the case with the standard library function [path.Join], the
+// result will not be "cleaned". This means multiple consecutive slashes in
+// either of the elements will be kept, and elements such as "." or ".." will
+// not be treated any specially, i.e. not resolved as relative path references.
+// If you need this kind of functionality, you can call standard library function
+// [path.Clean] on the result, or use [path.Join] from the standard library
+// instead. The performance is slightly better when using the combination of
+// [JoinOnly] and [path.Clean] compared to [path.Join] from standard library.
+// Note that unless you check for empty results from [JoinOnly], there may be
+// one difference between these two alternatives: When arguments to [path.Join]
+// ends up as empty string, it returns an empty string, but if [path.Clean] is
+// called with an empty string as argument, it returns ".".
 //
-// If it is known that the elements does not have leading or trailing slashes,
-// then you could use [Create] instead, which is a simpler implementation although
-// with minimal performance improvement. For more general paths where clean may be
-// required, you should consider [path.Join], as mentioned above.
+// One important difference from standard library [path.Join], is that [JoinOnly]
+// does not break URLs! When working with complete urls, [path.Join] (and
+// [path.Clean]) cannot be used because it will "clean" the two slashes following
+// the scheme component, e.g. change "https://" into "https:/". Also it will remove
+// any trailing path separators, which may make a difference in some cases. You
+// could use [net.URL], but is slower and more cumbersome to use for simple
+// concatenations (at least until go1.19 where a new function [url.JoinPath] was
+// introduced).
+//
+// The performance of this function should be close to optimal, except if hand-
+// writing an implementation using low-level pointer operations etc. Performance
+// is directly comparable to a corresponding single-statement concatenation, and
+// also to [Create], which effectively just an alias for [strings.Join]. The
+// implementation is based on the [strings.Builder] type, which is a performance
+// oriented wrapper over a byte slice buffer, same as used by the [strings.Join]
+// function internally. Assuming standard compiler optimizations are enabled, the
+// calls to strings.Builder functions will be inlined. There will only be a single
+// memory allocation, of minimal size, identical what you get with a plain
+// single-statement concatenation.
 func JoinOnly(elem ...string) string {
 	// Alternative simple size estimation, that overestimates instead of finding exact required size:
 	/*
@@ -161,22 +178,28 @@ func JoinOnly(elem ...string) string {
 	return b.String()
 }
 
-// Join concatenates any number of path elements, while ensuring slash separated,
-// ignoring empty elements and cleaning the result.
+// Join concatenates any number of path elements, while ensuring slash separated.
+// Empty elements are ignored. The result is cleaned.
 //
 // This is simply an alias for standard library [path.Join], and since the
-// compiler will inline it there will be no performance loss.
+// compiler will inline when standard compiler optimizations are enabled, there
+// will be no performance difference whichever you use.
 //
 // For joining elements that are already known to be clean, you will get better
 // performance by using the simpler functions [JoinOnly] or [Create] instead.
 //
-// Be careful if using this on URLs! It will "clean" the two slashes following the
-// scheme component, e.g. change "https://" into "https:/", and also it will remove
-// any trailing path separators, which may make a difference in some cases. Use
-// [JoinOnly2] instead to avoid these issues, if you can do without the cleaning.
+// The result from this function will be cleaned. This means multiple consecutive
+// slashes in either of the elements will be kept, and elements such as "." or ".."
+// will be resolved as relative path references, using purely lexical processing.
+// Se standard library documentation on [path.Clean] for more details
+// (https://pkg.go.dev/path#Clean).
 //
-// Se standard library documentation on [path.Clean] for explanation
-// of what cleaning does (https://pkg.go.dev/path#Clean).
+// Be aware if consider using this on URLs: The clean process performed by
+// [path.Clean], called internally from [path.Join], will "clean" the two slashes
+// following the scheme component, e.g. change "https://" into "https:/". Also it
+// will remove any trailing path separators, which may make a difference in some
+// cases. Use [JoinOnly] instead to avoid these issues, if you can do without the
+// other parts of the cleaning.
 func Join(elem ...string) string {
 	return path.Join(elem...)
 }
