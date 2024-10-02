@@ -1,3 +1,5 @@
 {
-    "go.buildTags": "cmount"
+    "go.buildTags": "cmount",
+    "files.eol": "\n",
+    "go.lintTool": "golangci-lint"
 }
