@@ -39,7 +39,7 @@ var (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "smb",
-		Description: "SMB / CIFS",
+		Description: "SMB",
 		NewFs:       NewFs,
 
 		Options: []fs.Option{{

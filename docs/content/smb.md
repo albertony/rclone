@@ -1,15 +1,21 @@
 ---
-title: "SMB / CIFS"
+title: "SMB"
 description: "Rclone docs for SMB backend"
 versionIntroduced: "v1.60"
 ---
 
 # {{< icon "fa fa-server" >}} SMB
 
-SMB is [a communication protocol to share files over network](https://en.wikipedia.org/wiki/Server_Message_Block).
+SMB provides access to files over the network file sharing protocol
+[Server Message Block](https://en.wikipedia.org/wiki/Server_Message_Block).
+This is sometimes also referred to using the name CIFS, Common Internet File
+System, which strictly speaking is an outdated SMB dialect, but for example
+Linux still has a component called cifs providing support for modern versions
+of the SMB protocols.
 
-This relies on [go-smb2 library](https://github.com/CloudSoda/go-smb2/) for
-communication with SMB protocol.
+This relies on the [go-smb2 library](https://github.com/CloudSoda/go-smb2/) for
+communication with SMB protocol, and it supports the modern variants SMB2 and
+SMB3.
 
 Paths are specified as `remote:sharename` (or `remote:` for the `lsd`
 command.)  You may put subdirectories in too, e.g. `remote:item/path/to/dir`.
@@ -52,7 +58,7 @@ name> remote
 Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
-XX / SMB / CIFS
+XX / SMB
    \ (smb)
 Storage> smb
 
