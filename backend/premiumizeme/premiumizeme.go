@@ -72,7 +72,7 @@ var (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "premiumizeme",
-		Description: "premiumize.me",
+		Description: "Premiumize.me",
 		NewFs:       NewFs,
 		Config: func(ctx context.Context, name string, m configmap.Mapper, config fs.ConfigIn) (*fs.ConfigOut, error) {
 			return oauthutil.ConfigOut("", &oauthutil.Options{

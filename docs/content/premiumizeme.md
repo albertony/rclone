@@ -1,10 +1,10 @@
 ---
-title: "premiumize.me"
-description: "Rclone docs for premiumize.me"
+title: "Premiumize.me"
+description: "Rclone docs for Premiumize.me"
 versionIntroduced: "v1.49"
 ---
 
-# {{< icon "fa fa-user" >}} premiumize.me
+# {{< icon "fa fa-user" >}} Premiumize.me
 
 Paths are specified as `remote:path`
 
@@ -12,8 +12,8 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 ## Configuration
 
-The initial setup for [premiumize.me](https://premiumize.me/) involves getting a
-token from premiumize.me which you need to do in your browser. `rclone config`
+The initial setup for [Premiumize.me](https://premiumize.me/) involves getting a
+token from Premiumize.me which you need to do in your browser. `rclone config`
 walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
@@ -35,7 +35,7 @@ Type of storage to configure.
 Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
 [snip]
-XX / premiumize.me
+XX / Premiumize.me
    \ "premiumizeme"
 [snip]
 Storage> premiumizeme
@@ -68,26 +68,26 @@ See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine with no Internet browser available.
 
 Note that rclone runs a webserver on your local machine to collect the
-token as returned from premiumize.me. This only runs from the moment it opens
+token as returned from Premiumize.me. This only runs from the moment it opens
 your browser to the moment you get back the verification code.  This
 is on `http://127.0.0.1:53682/` and this it may require you to unblock
 it temporarily if you are running a host firewall.
 
 Once configured you can then use `rclone` like this,
 
-List directories in top level of your premiumize.me
+List directories in top level of your Premiumize.me
 
 ```sh
 rclone lsd remote:
 ```
 
-List all the files in your premiumize.me
+List all the files in your Premiumize.me
 
 ```sh
 rclone ls remote:
 ```
 
-To copy a local directory to an premiumize.me directory called backup
+To copy a local directory to an Premiumize.me directory called backup
 
 ```sh
 rclone copy /home/source remote:backup
@@ -95,7 +95,7 @@ rclone copy /home/source remote:backup
 
 ### Modification times and hashes
 
-premiumize.me does not support modification times or hashes, therefore
+Premiumize.me does not support modification times or hashes, therefore
 syncing will default to `--size-only` checking.  Note that using
 `--update` will work.
 
@@ -241,11 +241,11 @@ Properties:
 
 ## Limitations
 
-Note that premiumize.me is case insensitive so you can't have a file called
+Note that Premiumize.me is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
-premiumize.me file names can't have the `\` or `"` characters in.
+Premiumize.me file names can't have the `\` or `"` characters in.
 rclone maps these to and from an identical looking unicode equivalents
 `＼` and `＂`
 
-premiumize.me only supports filenames up to 255 characters in length.
+Premiumize.me only supports filenames up to 255 characters in length.

@@ -90,7 +90,7 @@ directories to and from different cloud storage providers.
 - Petabox [:page_facing_up:](https://rclone.org/s3/#petabox)
 - PikPak [:page_facing_up:](https://rclone.org/pikpak/)
 - Pixeldrain [:page_facing_up:](https://rclone.org/pixeldrain/)
-- premiumize.me [:page_facing_up:](https://rclone.org/premiumizeme/)
+- Premiumize.me [:page_facing_up:](https://rclone.org/premiumizeme/)
 - put.io [:page_facing_up:](https://rclone.org/putio/)
 - Proton Drive [:page_facing_up:](https://rclone.org/protondrive/)
 - QingStor [:page_facing_up:](https://rclone.org/qingstor/)

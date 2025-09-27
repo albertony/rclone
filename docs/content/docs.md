@@ -73,7 +73,7 @@ See the following for detailed instructions for
 - [Pcloud](/pcloud/)
 - [PikPak](/pikpak/)
 - [Pixeldrain](/pixeldrain/)
-- [premiumize.me](/premiumizeme/)
+- [Premiumize.me](/premiumizeme/)
 - [put.io](/putio/)
 - [Proton Drive](/protondrive/)
 - [QingStor](/qingstor/)
