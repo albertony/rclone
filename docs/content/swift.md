@@ -12,10 +12,9 @@ This backend supports the following providers:
 
 - [Rackspace Cloud Files](https://www.rackspace.com/cloud/files/)
 - [Memset Memstore](https://www.memset.com/cloud/storage/)
-- [OVH Object Storage](https://www.ovhcloud.com/en/public-cloud/object-storage/)
+- [OVHcloud Object Storage](https://www.ovhcloud.com/en/public-cloud/object-storage/)
 - [Oracle Cloud Storage](https://docs.oracle.com/en-us/iaas/integration/doc/configure-object-storage.html)
-- [Blomp Cloud Storage](https://www.blomp.com/cloud-storage/)
-- [IBM Bluemix Cloud ObjectStorage Swift](https://console.bluemix.net/docs/infrastructure/objectstorage-swift/index.html)
+- [Blomp Cloud Storage](https://www.blomp.com/)
 
 Paths are specified as `remote:container` (or `remote:` for the `lsd`
 command.)  You may put subdirectories in too, e.g. `remote:container/path/to/dir`.
