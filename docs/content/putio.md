@@ -1,19 +1,19 @@
 ---
-title: "put.io"
-description: "Rclone docs for put.io"
+title: "Put.io"
+description: "Rclone docs for Put.io"
 versionIntroduced: "v1.49"
 ---
 
-# {{< icon "fas fa-parking" >}} put.io
+# {{< icon "fas fa-parking" >}} Put.io
 
 Paths are specified as `remote:path`
 
-put.io paths may be as deep as required, e.g.
+Put.io paths may be as deep as required, e.g.
 `remote:directory/subdirectory`.
 
 ## Configuration
 
-The initial setup for put.io involves getting a token from put.io
+The initial setup for Put.io involves getting a token from Put.io
 which you need to do in your browser.  `rclone config` walks you
 through it.
 
@@ -83,7 +83,7 @@ See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine with no Internet browser available.
 
 Note that rclone runs a webserver on your local machine to collect the
-token as returned from put.io  if using web browser to automatically
+token as returned from Put.io if using web browser to automatically
 authenticate. This only
 runs from the moment it opens your browser to the moment you get back
 the verification code.  This is on `http://127.0.0.1:53682/` and this
@@ -92,19 +92,19 @@ firewall, or use manual mode.
 
 You can then use it like this,
 
-List directories in top level of your put.io
+List directories in top level of your Put.io
 
 ```sh
 rclone lsd remote:
 ```
 
-List all the files in your put.io
+List all the files in your Put.io
 
 ```sh
 rclone ls remote:
 ```
 
-To copy a local directory to a put.io directory called backup
+To copy a local directory to a Put.io directory called backup
 
 ```sh
 rclone copy /home/source remote:backup
@@ -237,7 +237,7 @@ Properties:
 
 ## Limitations
 
-put.io has rate limiting. When you hit a limit, rclone automatically
+Put.io has rate limiting. When you hit a limit, rclone automatically
 retries after waiting the amount of time requested by the server.
 
 If you want to avoid ever hitting these limits, you may use the

@@ -174,7 +174,7 @@ WebDAV or S3, that work out of the box.)
 {{< provider name="PikPak" home="https://mypikpak.com/" config="/pikpak/" >}}
 {{< provider name="Pixeldrain" home="https://pixeldrain.com/" config="/pixeldrain/" >}}
 {{< provider name="Premiumize.me" home="https://premiumize.me/" config="/premiumizeme/" >}}
-{{< provider name="put.io" home="https://put.io/" config="/putio/" >}}
+{{< provider name="Put.io" home="https://put.io/" config="/putio/" >}}
 {{< provider name="Proton Drive" home="https://proton.me/drive" config="/protondrive/" >}}
 {{< provider name="QingStor" home="https://www.qingcloud.com/products/storage" config="/qingstor/" >}}
 {{< provider name="Qiniu Cloud Object Storage (Kodo)" home="https://www.qiniu.com/en/products/kodo" config="/s3/#qiniu" >}}

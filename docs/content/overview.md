@@ -53,7 +53,7 @@ Here is an overview of the major features of each cloud storage system.
 | PikPak                       | MD5               | R       | No               | No              | R         | -        |
 | Pixeldrain                   | SHA256            | R/W     | No               | No              | R         | RW       |
 | Premiumize.me                | -                 | -       | Yes              | No              | R         | -        |
-| put.io                       | CRC-32            | R/W     | No               | Yes             | R         | -        |
+| Put.io                       | CRC-32            | R/W     | No               | Yes             | R         | -        |
 | Proton Drive                 | SHA1              | R/W     | No               | No              | R         | -        |
 | QingStor                     | MD5               | - ⁹     | No               | No              | R/W       | -        |
 | Quatrix by Maytech           | -                 | R/W     | No               | No              | -         | -        |
@@ -544,7 +544,7 @@ upon backend-specific capabilities.
 | PikPak                       | Yes   | Yes  | Yes  | Yes     | Yes     | No    | No           | No                | Yes          | Yes   | Yes      |
 | Pixeldrain                   | Yes   | No   | Yes  | Yes     | No      | No    | Yes          | No                | Yes          | Yes   | Yes      |
 | Premiumize.me                | Yes   | No   | Yes  | Yes     | No      | No    | No           | No                | Yes          | Yes   | Yes      |
-| put.io                       | Yes   | No   | Yes  | Yes     | Yes     | No    | Yes          | No                | No           | Yes   | Yes      |
+| Put.io                       | Yes   | No   | Yes  | Yes     | Yes     | No    | Yes          | No                | No           | Yes   | Yes      |
 | Proton Drive                 | Yes   | No   | Yes  | Yes     | Yes     | No    | No           | No                | No           | Yes   | Yes      |
 | QingStor                     | No    | Yes  | No   | No      | Yes     | Yes   | No           | No                | No           | No    | No       |
 | Quatrix by Maytech           | Yes   | Yes  | Yes  | Yes     | No      | No    | No           | No                | No           | Yes   | Yes      |

@@ -74,7 +74,7 @@ See the following for detailed instructions for
 - [PikPak](/pikpak/)
 - [Pixeldrain](/pixeldrain/)
 - [Premiumize.me](/premiumizeme/)
-- [put.io](/putio/)
+- [Put.io](/putio/)
 - [Proton Drive](/protondrive/)
 - [QingStor](/qingstor/)
 - [Quatrix by Maytech](/quatrix/)
