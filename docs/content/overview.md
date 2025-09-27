@@ -25,7 +25,7 @@ Here is an overview of the major features of each cloud storage system.
 | Cloudinary                   | MD5               | R       | No               | Yes             | -         | -        |
 | Dropbox                      | DBHASH ¹          | R       | Yes              | No              | -         | -        |
 | Enterprise File Fabric       | -                 | R/W     | Yes              | No              | R/W       | -        |
-| FileLu Cloud Storage         | MD5               | R/W     | No               | Yes             | R         | -        |
+| FileLu                       | MD5               | R/W     | No               | Yes             | R         | -        |
 | Files.com                    | MD5, CRC32        | DR/W    | Yes              | No              | R         | -        |
 | FTP                          | -                 | R/W ¹⁰  | No               | No              | -         | -        |
 | Gofile                       | MD5               | DR/W    | No               | Yes             | R         | -        |
@@ -56,7 +56,7 @@ Here is an overview of the major features of each cloud storage system.
 | Put.io                       | CRC-32            | R/W     | No               | Yes             | R         | -        |
 | Proton Drive                 | SHA1              | R/W     | No               | No              | R         | -        |
 | QingStor                     | MD5               | - ⁹     | No               | No              | R/W       | -        |
-| Quatrix by Maytech           | -                 | R/W     | No               | No              | -         | -        |
+| Quatrix                      | -                 | R/W     | No               | No              | -         | -        |
 | Seafile                      | -                 | -       | No               | No              | -         | -        |
 | SFTP                         | MD5, SHA1 ²       | DR/W    | Depends          | No              | -         | -        |
 | Sia                          | -                 | -       | No               | No              | -         | -        |
@@ -547,7 +547,7 @@ upon backend-specific capabilities.
 | Put.io                       | Yes   | No   | Yes  | Yes     | Yes     | No    | Yes          | No                | No           | Yes   | Yes      |
 | Proton Drive                 | Yes   | No   | Yes  | Yes     | Yes     | No    | No           | No                | No           | Yes   | Yes      |
 | QingStor                     | No    | Yes  | No   | No      | Yes     | Yes   | No           | No                | No           | No    | No       |
-| Quatrix by Maytech           | Yes   | Yes  | Yes  | Yes     | No      | No    | No           | No                | No           | Yes   | Yes      |
+| Quatrix                      | Yes   | Yes  | Yes  | Yes     | No      | No    | No           | No                | No           | Yes   | Yes      |
 | Seafile                      | Yes   | Yes  | Yes  | Yes     | Yes     | Yes   | Yes          | No                | Yes          | Yes   | Yes      |
 | SFTP                         | No    | Yes ⁴| Yes  | Yes     | No      | No    | Yes          | No                | No           | Yes   | Yes      |
 | Sia                          | No    | No   | No   | No      | No      | No    | Yes          | No                | No           | No    | Yes      |

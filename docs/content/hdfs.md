@@ -1,14 +1,14 @@
 ---
-title: "HDFS Remote"
-description: "Remote for Hadoop Distributed Filesystem"
+title: "HDFS"
+description: "Rclone docs for HDFS"
 versionIntroduced: "v1.54"
 ---
 
 # {{< icon "fa fa-globe" >}} HDFS
 
-[HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)
-is a distributed file-system, part of the [Apache Hadoop](https://hadoop.apache.org/)
-framework.
+[HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html),
+Hadoop distributed file system, is a distributed file-system, part of the
+[Apache Hadoop](https://hadoop.apache.org/) framework.
 
 Paths are specified as `remote:` or `remote:path/to/dir`.
 
@@ -33,7 +33,7 @@ Type of storage to configure.
 Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
 [skip]
-XX / Hadoop distributed file system
+XX / HDFS
    \ "hdfs"
 [skip]
 Storage> hdfs

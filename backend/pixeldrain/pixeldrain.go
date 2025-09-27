@@ -32,7 +32,7 @@ const (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "pixeldrain",
-		Description: "Pixeldrain Filesystem",
+		Description: "Pixeldrain",
 		NewFs:       NewFs,
 		Config:      nil,
 		Options: []fs.Option{{

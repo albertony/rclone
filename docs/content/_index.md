@@ -124,7 +124,7 @@ WebDAV or S3, that work out of the box.)
 {{< provider name="Enterprise File Fabric" home="https://storagemadeeasy.com/about/" config="/filefabric/" >}}
 {{< provider name="Exaba" home="https://exaba.com/" config="/s3/#exaba" >}}
 {{< provider name="Fastmail Files" home="https://www.fastmail.com/" config="/webdav/#fastmail-files" >}}
-{{< provider name="FileLu Cloud Storage" home="https://filelu.com/" config="/filelu/" >}}
+{{< provider name="FileLu" home="https://filelu.com/" config="/filelu/" >}}
 {{< provider name="Files.com" home="https://www.files.com/" config="/filescom/" >}}
 {{< provider name="FlashBlade" home="https://www.purestorage.com/products/unstructured-data-storage.html" config="/s3/#pure-storage-flashblade" >}}
 {{< provider name="FTP" home="https://en.wikipedia.org/wiki/File_Transfer_Protocol" config="/ftp/" >}}
@@ -163,7 +163,7 @@ WebDAV or S3, that work out of the box.)
 {{< provider name="Blomp Cloud Storage" home="https://rclone.org/swift/" config="/swift/" >}}
 {{< provider name="OpenDrive" home="https://www.opendrive.com/" config="/opendrive/" >}}
 {{< provider name="OpenStack Swift" home="https://docs.openstack.org/swift/latest/" config="/swift/" >}}
-{{< provider name="Oracle Cloud Storage Swift" home="https://docs.oracle.com/en-us/iaas/integration/doc/configure-object-storage.html" config="/swift/" >}}
+{{< provider name="Oracle Object Storage (Swift)" home="https://docs.oracle.com/iaas/integration/doc/configure-instance-object-storage-bucket.html" config="/swift/" >}}
 {{< provider name="Oracle Object Storage" home="https://www.oracle.com/cloud/storage/object-storage" config="/oracleobjectstorage/" >}}
 {{< provider name="Outscale" home="https://en.outscale.com/storage/outscale-object-storage/" config="/s3/#outscale" >}}
 {{< provider name="OVHcloud Object Storage (Swift)" home="https://www.ovhcloud.com/en/public-cloud/object-storage/" config="/swift/" >}}
@@ -178,7 +178,7 @@ WebDAV or S3, that work out of the box.)
 {{< provider name="Proton Drive" home="https://proton.me/drive" config="/protondrive/" >}}
 {{< provider name="QingStor" home="https://www.qingcloud.com/products/storage" config="/qingstor/" >}}
 {{< provider name="Qiniu Cloud Object Storage (Kodo)" home="https://www.qiniu.com/en/products/kodo" config="/s3/#qiniu" >}}
-{{< provider name="Quatrix by Maytech" home="https://www.maytech.net/products/quatrix-business" config="/quatrix/" >}}
+{{< provider name="Quatrix" home="https://www.maytech.net/products/quatrix-business" config="/quatrix/" >}}
 {{< provider name="Rackspace Cloud Files" home="https://www.rackspace.com/cloud/files" config="/swift/" >}}
 {{< provider name="rsync.net" home="https://rsync.net/products/rclone.html" config="/sftp/#rsync-net" >}}
 {{< provider name="Scaleway" home="https://www.scaleway.com/object-storage/" config="/s3/#scaleway" >}}
@@ -209,14 +209,14 @@ WebDAV or S3, that work out of the box.)
 
 These backends adapt or modify other storage providers:
 
-{{< provider name="Alias: Rename existing remotes" home="/alias/" config="/alias/" >}}
-{{< provider name="Cache: Cache remotes (DEPRECATED)" home="/cache/" config="/cache/" >}}
-{{< provider name="Chunker: Split large files" home="/chunker/" config="/chunker/" >}}
-{{< provider name="Combine: Combine multiple remotes into a directory tree" home="/combine/" config="/combine/" >}}
-{{< provider name="Compress: Compress files" home="/compress/" config="/compress/" >}}
-{{< provider name="Crypt: Encrypt files" home="/crypt/" config="/crypt/" >}}
-{{< provider name="Hasher: Hash files" home="/hasher/" config="/hasher/" >}}
-{{< provider name="Union: Join multiple remotes to work together" home="/union/" config="/union/" >}}
+{{< provider name="Alias: Set a new name for another remote" home="/alias/" config="/alias/" >}}
+{{< provider name="Cache: Cache other remotes (DEPRECATED)" home="/cache/" config="/cache/" >}}
+{{< provider name="Chunker: Split large files in existing remote" home="/chunker/" config="/chunker/" >}}
+{{< provider name="Combine: Join several existing remotes into a single directory tree" home="/combine/" config="/combine/" >}}
+{{< provider name="Compress: Add compression to an existing remote" home="/compress/" config="/compress/" >}}
+{{< provider name="Crypt: Add encryption to an existing remote" home="/crypt/" config="/crypt/" >}}
+{{< provider name="Hasher: Provide improved checksums for an existing remote" home="/hasher/" config="/hasher/" >}}
+{{< provider name="Union: Join several existing remotes into a single unified view" home="/union/" config="/union/" >}}
 
 ## Links
 

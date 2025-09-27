@@ -6,6 +6,9 @@ versionIntroduced: "v1.47"
 
 # {{< icon "fa fa-suitcase" >}} Koofr
 
+This backend supports the [Koofr](https://koofr.eu) storage provider, but also
+other providers that are using the same API, such as [Digi Storage](https://www.digi.ro).
+
 Paths are specified as `remote:path`, and may be as deep as required, e.g.
 `remote:directory/subdirectory`.
 
@@ -49,7 +52,7 @@ Press Enter to leave empty.
    \ (digistorage)
  3 / Any other Koofr API compatible storage service
    \ (other)
-provider> 1    
+provider> 1
 Option user.
 Your user name.
 Enter a value.

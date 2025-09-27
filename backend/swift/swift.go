@@ -146,7 +146,7 @@ the DEBUG log.
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "swift",
-		Description: "OpenStack Swift (Rackspace Cloud Files, Blomp Cloud Storage, Memset Memstore, OVH)",
+		Description: "OpenStack Swift: Rackspace Cloud Files, Memset Memstore, OVHcloud Object Storage, Blomp Cloud Storage and others",
 		NewFs:       NewFs,
 		Options: append([]fs.Option{{
 			Name:    "env_auth",
@@ -174,22 +174,22 @@ func init() {
 			Help: "Authentication URL for server (OS_AUTH_URL).",
 			Examples: []fs.OptionExample{{
 				Value: "https://auth.api.rackspacecloud.com/v1.0",
-				Help:  "Rackspace US",
+				Help:  "Rackspace Cloud Files (US)",
 			}, {
 				Value: "https://lon.auth.api.rackspacecloud.com/v1.0",
-				Help:  "Rackspace UK",
+				Help:  "Rackspace Cloud Files (UK)",
 			}, {
 				Value: "https://identity.api.rackspacecloud.com/v2.0",
-				Help:  "Rackspace v2",
+				Help:  "Rackspace Cloud Files (v2)",
 			}, {
 				Value: "https://auth.storage.memset.com/v1.0",
-				Help:  "Memset Memstore UK",
+				Help:  "Memset Memstore (UK)",
 			}, {
 				Value: "https://auth.storage.memset.com/v2.0",
-				Help:  "Memset Memstore UK v2",
+				Help:  "Memset Memstore (UK v2)",
 			}, {
 				Value: "https://auth.cloud.ovh.net/v3",
-				Help:  "OVH",
+				Help:  "OVHcloud Object Storage",
 			}, {
 				Value: "https://authenticate.ain.net",
 				Help:  "Blomp Cloud Storage",

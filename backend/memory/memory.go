@@ -31,7 +31,7 @@ var (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "memory",
-		Description: "In memory object storage system.",
+		Description: "Memory: RAM filesystem",
 		NewFs:       NewFs,
 		Options:     []fs.Option{},
 	})

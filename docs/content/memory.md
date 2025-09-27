@@ -1,6 +1,6 @@
 ---
 title: "Memory"
-description: "Rclone docs for Memory backend"
+description: "Rclone docs for Memory"
 versionIntroduced: "v1.51"
 ---
 

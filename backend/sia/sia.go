@@ -37,7 +37,7 @@ const (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "sia",
-		Description: "Sia Decentralized Cloud",
+		Description: "Sia",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name: "api_url",

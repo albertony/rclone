@@ -26,7 +26,7 @@ import (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "hasher",
-		Description: "Better checksums for other remotes",
+		Description: "Hasher: Virtual provider to provide improved checksums for another remote",
 		NewFs:       NewFs,
 		MetadataInfo: &fs.MetadataInfo{
 			Help: `Any metadata supported by the underlying remote is read and written.`,

@@ -29,7 +29,7 @@ import (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "oracleobjectstorage",
-		Description: "Oracle Cloud Infrastructure Object Storage",
+		Description: "Oracle Object Storage: Provided by Oracle Cloud Infrastructure (OCI)",
 		Prefix:      "oos",
 		NewFs:       NewFs,
 		CommandHelp: commandHelp,

@@ -154,7 +154,7 @@ func showHelp(fsInfo *fs.RegInfo) error {
 		return fmt.Errorf("%s backend has no commands", name)
 	}
 	fmt.Printf("## Backend commands\n\n")
-	fmt.Printf(`Here are the commands specific to the %s backend.
+	fmt.Printf(`Here are the commands specific to the `+"`%s`"+`backend.
 
 Run them with
 

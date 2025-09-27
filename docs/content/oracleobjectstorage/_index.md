@@ -8,7 +8,7 @@ versionIntroduced: "v1.60"
 # {{< icon "fa fa-cloud" >}} Oracle Object Storage
 
 Object Storage provided by the Oracle Cloud Infrastructure (OCI).
-Read more at <oracle.com>:
+Read more at oracle.com:
 
 - [Oracle Object Storage Overview](https://docs.oracle.com/iaas/Content/Object/Concepts/objectstorageoverview.htm)
 - [Oracle Object Storage FAQ](https://www.oracle.com/cloud/storage/object-storage/faq/)
@@ -21,6 +21,8 @@ Sample command to transfer local artifacts to remote:bucket in oracle object sto
 ```sh
 rclone -vvv  --progress --stats-one-line --max-stats-groups 10 --log-format date,time,UTC,longfile --fast-list --buffer-size 256Mi --oos-no-check-bucket --oos-upload-cutoff 10Mi --multi-thread-cutoff 16Mi --multi-thread-streams 3000 --transfers 3000 --checkers 64  --retries 2  --oos-chunk-size 10Mi --oos-upload-concurrency 10000  --oos-attempt-resume-upload --oos-leave-parts-on-error sync ./artifacts  remote:bucket -vv
 ```
+
+Oracle Object Storage can also be used with the [OpenStack Swift](/swift) backend.
 
 ## Configuration
 

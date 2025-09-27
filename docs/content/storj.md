@@ -138,7 +138,7 @@ Type of storage to configure.
 Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
 [snip]
-XX / Storj Decentralized Cloud Storage
+XX / Storj
    \ "storj"
 [snip]
 Storage> storj

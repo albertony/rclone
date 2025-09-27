@@ -306,7 +306,7 @@ func showBackend(name string) {
 		}
 		optionsType = cases.Title(language.Und, cases.NoLower).String(optionsType)
 		fmt.Printf("### %s options\n\n", optionsType)
-		fmt.Printf("Here are the %s options specific to %s (%s).\n\n", optionsType, backend.Name, backend.Description)
+		fmt.Printf("Here are the %s options specific to the `%s` backend.\n\n", strings.ToLower(optionsType), backend.Name)
 		optionsType = "advanced"
 		for _, opt := range opts {
 			done[opt.Name] = struct{}{}

@@ -77,7 +77,7 @@ func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "google cloud storage",
 		Prefix:      "gcs",
-		Description: "Google Cloud Storage (this is not Google Drive)",
+		Description: "Google Cloud Storage: This is not Google Drive",
 		NewFs:       NewFs,
 		Config: func(ctx context.Context, name string, m configmap.Mapper, config fs.ConfigIn) (*fs.ConfigOut, error) {
 			saFile, _ := m.Get("service_account_file")

@@ -30,7 +30,7 @@ import (
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "combine",
-		Description: "Combine several remotes into one",
+		Description: "Combine: Virtual provider to join other remotes into a single directory tree",
 		NewFs:       NewFs,
 		MetadataInfo: &fs.MetadataInfo{
 			Help: `Any metadata supported by the underlying remote is read and written.`,

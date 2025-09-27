@@ -7,14 +7,15 @@ versionIntroduced: "v0.91"
 # {{< icon "fa fa-space-shuttle" >}} OpenStack Swift
 
 OpenStack Swift, or [OpenStack Object Storage](https://docs.openstack.org/swift/latest/),
-is an open source cloud storage software that some commercial storage providers uses.
-This backend supports the following providers:
+is an open source cloud storage software that commercial storage providers may rely on.
+This includes:
 
 - [Rackspace Cloud Files](https://www.rackspace.com/cloud/files/)
 - [Memset Memstore](https://www.memset.com/cloud/storage/)
 - [OVHcloud Object Storage](https://www.ovhcloud.com/en/public-cloud/object-storage/)
-- [Oracle Cloud Storage](https://docs.oracle.com/en-us/iaas/integration/doc/configure-object-storage.html)
 - [Blomp Cloud Storage](https://www.blomp.com/)
+- [Oracle Object Storage](https://docs.oracle.com/iaas/integration/doc/configure-instance-object-storage-bucket.html)
+  - Note that rclone has a dedicated [backend](/oracleobjectstorage) for this.
 
 Paths are specified as `remote:container` (or `remote:` for the `lsd`
 command.)  You may put subdirectories in too, e.g. `remote:container/path/to/dir`.
@@ -56,17 +57,17 @@ API key or password (OS_PASSWORD).
 key> 
 Authentication URL for server (OS_AUTH_URL).
 Choose a number from below, or type in your own value
- 1 / Rackspace US
+ 1 / Rackspace Cloud Files (US)
    \ "https://auth.api.rackspacecloud.com/v1.0"
- 2 / Rackspace UK
+ 2 / Rackspace Cloud Files (UK)
    \ "https://lon.auth.api.rackspacecloud.com/v1.0"
- 3 / Rackspace v2
+ 3 / Rackspace Cloud Files (v2)
    \ "https://identity.api.rackspacecloud.com/v2.0"
- 4 / Memset Memstore UK
+ 4 / Memset Memstore (UK)
    \ "https://auth.storage.memset.com/v1.0"
- 5 / Memset Memstore UK v2
+ 5 / Memset Memstore (UK v2)
    \ "https://auth.storage.memset.com/v2.0"
- 6 / OVH
+ 6 / OVHcloud Object Storage
    \ "https://auth.cloud.ovh.net/v3"
  7  / Blomp Cloud Storage
    \ "https://authenticate.ain.net"

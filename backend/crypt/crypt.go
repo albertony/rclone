@@ -26,7 +26,7 @@ import (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "crypt",
-		Description: "Encrypt/Decrypt a remote",
+		Description: "Crypt: Virtual provider to add encryption to another remote",
 		NewFs:       NewFs,
 		CommandHelp: commandHelp,
 		MetadataInfo: &fs.MetadataInfo{

@@ -65,7 +65,7 @@ const (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "cache",
-		Description: "Cache a remote",
+		Description: "Cache: Deprecated virtual provider to cache other remotes",
 		NewFs:       NewFs,
 		CommandHelp: commandHelp,
 		Options: []fs.Option{{

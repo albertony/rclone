@@ -71,7 +71,7 @@ func init() {
 	// Register our remote
 	fs.Register(&fs.RegInfo{
 		Name:        "compress",
-		Description: "Compress a remote",
+		Description: "Compress: Virtual provider to add compression to another remote",
 		NewFs:       NewFs,
 		MetadataInfo: &fs.MetadataInfo{
 			Help: `Any metadata supported by the underlying remote is read and written.`,

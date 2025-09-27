@@ -68,7 +68,7 @@ func init() {
 	updateTokenURL(oauthConfig, defaultHostname)
 	fs.Register(&fs.RegInfo{
 		Name:        "pcloud",
-		Description: "Pcloud",
+		Description: "pCloud",
 		NewFs:       NewFs,
 		Config: func(ctx context.Context, name string, m configmap.Mapper, config fs.ConfigIn) (*fs.ConfigOut, error) {
 			optc := new(Options)

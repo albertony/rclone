@@ -1,6 +1,6 @@
 ---
 title: "Sia"
-description: "Remote for Sia Decentralized Cloud"
+description: "Rclone docs for Sia"
 versionIntroduced: "v1.57"
 date: "2019-10-02"
 ---

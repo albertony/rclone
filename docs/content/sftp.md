@@ -1,6 +1,6 @@
 ---
 title: "SFTP"
-description: "SFTP"
+description: "Rclone docs for SFTP"
 versionIntroduced: "v1.36"
 ---
 

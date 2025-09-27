@@ -56,7 +56,7 @@ var (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "seafile",
-		Description: "seafile",
+		Description: "Seafile",
 		NewFs:       NewFs,
 		Config:      Config,
 		Options: []fs.Option{{

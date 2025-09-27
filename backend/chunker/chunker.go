@@ -144,7 +144,7 @@ const (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "chunker",
-		Description: "Transparently chunk/split large files",
+		Description: "Chunker: Virtual provider to split large files in another remote",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name:     "remote",

@@ -25,7 +25,7 @@ import (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "filelu",
-		Description: "FileLu Cloud Storage",
+		Description: "FileLu",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name:      "key",

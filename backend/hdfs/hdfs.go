@@ -15,7 +15,7 @@ import (
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "hdfs",
-		Description: "Hadoop distributed file system",
+		Description: "HDFS: Hadoop distributed file system",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name:      "namenode",

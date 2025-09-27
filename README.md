@@ -45,11 +45,11 @@ directories to and from different cloud storage providers.
 - Files.com [:page_facing_up:](https://rclone.org/filescom/)
 - FlashBlade [:page_facing_up:](https://rclone.org/s3/#pure-storage-flashblade)
 - FTP [:page_facing_up:](https://rclone.org/ftp/)
-- GoFile [:page_facing_up:](https://rclone.org/gofile/)
+- Gofile [:page_facing_up:](https://rclone.org/gofile/)
 - Google Cloud Storage [:page_facing_up:](https://rclone.org/googlecloudstorage/)
 - Google Drive [:page_facing_up:](https://rclone.org/drive/)
 - Google Photos [:page_facing_up:](https://rclone.org/googlephotos/)
-- HDFS (Hadoop Distributed Filesystem) [:page_facing_up:](https://rclone.org/hdfs/)
+- HDFS [:page_facing_up:](https://rclone.org/hdfs/)
 - Hetzner Storage Box [:page_facing_up:](https://rclone.org/sftp/#hetzner-storage-box)
 - HiDrive [:page_facing_up:](https://rclone.org/hidrive/)
 - HTTP [:page_facing_up:](https://rclone.org/http/)
@@ -80,7 +80,7 @@ directories to and from different cloud storage providers.
 - Blomp Cloud Storage [:page_facing_up:](https://rclone.org/swift/)
 - OpenDrive [:page_facing_up:](https://rclone.org/opendrive/)
 - OpenStack Swift [:page_facing_up:](https://rclone.org/swift/)
-- Oracle Cloud Storage [:page_facing_up:](https://rclone.org/swift/)
+- Oracle Object Storage (Swift) [:page_facing_up:](https://rclone.org/swift/)
 - Oracle Object Storage [:page_facing_up:](https://rclone.org/oracleobjectstorage/)
 - Outscale [:page_facing_up:](https://rclone.org/s3/#outscale)
 - OVHcloud Object Storage (Swift) [:page_facing_up:](https://rclone.org/swift/)
@@ -128,14 +128,14 @@ Please see [the full list of all storage providers and their features](https://r
 
 These backends adapt or modify other storage providers
 
-- Alias: rename existing remotes [:page_facing_up:](https://rclone.org/alias/)
-- Cache: cache remotes (DEPRECATED) [:page_facing_up:](https://rclone.org/cache/)
-- Chunker: split large files [:page_facing_up:](https://rclone.org/chunker/)
-- Combine: combine multiple remotes into a directory tree [:page_facing_up:](https://rclone.org/combine/)
-- Compress: compress files [:page_facing_up:](https://rclone.org/compress/)
-- Crypt: encrypt files [:page_facing_up:](https://rclone.org/crypt/)
-- Hasher: hash files [:page_facing_up:](https://rclone.org/hasher/)
-- Union: join multiple remotes to work together [:page_facing_up:](https://rclone.org/union/)
+- Alias: Set a new name for another remote [:page_facing_up:](https://rclone.org/alias/)
+- Cache: Cache other remotes (DEPRECATED) [:page_facing_up:](https://rclone.org/cache/)
+- Chunker: Split large files in existing remote [:page_facing_up:](https://rclone.org/chunker/)
+- Combine: Join several existing remotes into a single directory tree [:page_facing_up:](https://rclone.org/combine/)
+- Compress: Add compression to an existing remote [:page_facing_up:](https://rclone.org/compress/)
+- Crypt: Add encryption to an existing remote [:page_facing_up:](https://rclone.org/crypt/)
+- Hasher: Provide improved checksums for an existing remote [:page_facing_up:](https://rclone.org/hasher/)
+- Union: Join several existing remotes into a single unified view [:page_facing_up:](https://rclone.org/union/)
 
 ## Features
 

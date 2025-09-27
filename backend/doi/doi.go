@@ -44,7 +44,7 @@ var (
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "doi",
-		Description: "DOI datasets",
+		Description: "DOI: Datasets published with a Digital Object Identifier on Zenodo, Dataverse and Invenio",
 		NewFs:       NewFs,
 		CommandHelp: commandHelp,
 		Options: []fs.Option{{

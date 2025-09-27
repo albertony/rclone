@@ -63,7 +63,7 @@ func (timeTypeChoices) Choices() []string {
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "local",
-		Description: "Local Disk",
+		Description: "Local: The local filesystem",
 		NewFs:       NewFs,
 		CommandHelp: commandHelp,
 		MetadataInfo: &fs.MetadataInfo{

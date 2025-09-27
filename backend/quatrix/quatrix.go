@@ -48,7 +48,7 @@ const (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "quatrix",
-		Description: "Quatrix by Maytech",
+		Description: "Quatrix",
 		NewFs:       NewFs,
 		Options: fs.Options{
 			{

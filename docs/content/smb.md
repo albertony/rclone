@@ -1,6 +1,6 @@
 ---
 title: "SMB"
-description: "Rclone docs for SMB backend"
+description: "Rclone docs for SMB"
 versionIntroduced: "v1.60"
 ---
 

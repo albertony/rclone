@@ -1,14 +1,14 @@
 ---
 title: "ImageKit"
-description: "Rclone docs for ImageKit backend."
+description: "Rclone docs for ImageKit"
 versionIntroduced: "v1.63"
 ---
 
 # {{< icon "fa fa-cloud" >}} ImageKit
 
-This is a backend for the [ImageKit.io](https://imagekit.io/) storage service.
+This is a backend for the [ImageKit](https://imagekit.io/) storage service.
 
-[ImageKit.io](https://imagekit.io/) provides real-time image and video
+[ImageKit](https://imagekit.io/) provides real-time image and video
 optimizations, transformations, and CDN delivery. Over 1,000 businesses
 and 70,000 developers trust ImageKit with their images and videos on the web.
 
@@ -20,7 +20,7 @@ grow, upgrade to a plan that best fits your needs. See [the pricing details](htt
 
 Here is an example of making an imagekit configuration.
 
-Firstly create a [ImageKit.io](https://imagekit.io/) account and choose a plan.
+Firstly create a [ImageKit](https://imagekit.io/) account and choose a plan.
 
 You will need to log in and get the `publicKey` and `privateKey` for your account
 from the developer section.
@@ -47,23 +47,23 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [snip]
-XX / ImageKit.io
+XX / ImageKit
 \ (imagekit)
 [snip]
 Storage> imagekit
   
 Option endpoint.
-You can find your ImageKit.io URL endpoint in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
+You can find your ImageKit URL endpoint in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
 Enter a value.
 endpoint> https://ik.imagekit.io/imagekit_id  
 
 Option public_key.
-You can find your ImageKit.io public key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
+You can find your ImageKit public key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
 Enter a value.
 public_key> public_****************************
 
 Option private_key.
-You can find your ImageKit.io private key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
+You can find your ImageKit private key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)
 Enter a value.
 private_key> private_****************************
 

@@ -1,6 +1,6 @@
 ---
 title: "Mailru"
-description: "Mail.ru Cloud"
+description: "Rclone docs for Mail.ru Cloud"
 versionIntroduced: "v1.50"
 ---
 

@@ -74,7 +74,7 @@ func withDefault(key, defaultValue string) (value string) {
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "sugarsync",
-		Description: "Sugarsync",
+		Description: "SugarSync",
 		NewFs:       NewFs,
 		Config: func(ctx context.Context, name string, m configmap.Mapper, config fs.ConfigIn) (*fs.ConfigOut, error) {
 			opt := new(Options)
@@ -95,7 +95,7 @@ func init() {
 				}
 				return fs.ConfigGoto("username")
 			case "username":
-				return fs.ConfigInput("password", "config_username", "username (email address)")
+				return fs.ConfigInput("password", "config_username", "Username (email address)")
 			case "password":
 				m.Set("username", config.Result)
 				return fs.ConfigPassword("auth", "config_password", "Your Sugarsync password.\n\nOnly required during setup and will not be stored.")

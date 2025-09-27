@@ -28,7 +28,7 @@ import (
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "union",
-		Description: "Union merges the contents of several upstream fs",
+		Description: "Union: Virtual provider to join other remotes into a single unified view",
 		NewFs:       NewFs,
 		MetadataInfo: &fs.MetadataInfo{
 			Help: `Any metadata supported by the underlying remote is read and written.`,

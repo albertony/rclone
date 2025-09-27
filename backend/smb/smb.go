@@ -39,7 +39,7 @@ var (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "smb",
-		Description: "SMB",
+		Description: "SMB: Network file sharing protocol referred to as SMB, CIFS or Samba",
 		NewFs:       NewFs,
 
 		Options: []fs.Option{{

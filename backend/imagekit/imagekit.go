@@ -1,4 +1,4 @@
-// Package imagekit provides an interface to the ImageKit.io media library.
+// Package imagekit provides an interface to the ImageKit media library.
 package imagekit
 
 import (
@@ -99,7 +99,7 @@ var systemMetadataInfo = map[string]fs.MetadataHelp{
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "imagekit",
-		Description: "ImageKit.io",
+		Description: "ImageKit",
 		NewFs:       NewFs,
 		MetadataInfo: &fs.MetadataInfo{
 			System: systemMetadataInfo,
@@ -108,18 +108,18 @@ func init() {
 		Options: []fs.Option{
 			{
 				Name:     "endpoint",
-				Help:     "You can find your ImageKit.io URL endpoint in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
+				Help:     "You can find your ImageKit URL endpoint in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
 				Required: true,
 			},
 			{
 				Name:      "public_key",
-				Help:      "You can find your ImageKit.io public key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
+				Help:      "You can find your ImageKit public key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
 				Required:  true,
 				Sensitive: true,
 			},
 			{
 				Name:      "private_key",
-				Help:      "You can find your ImageKit.io private key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
+				Help:      "You can find your ImageKit private key in your [dashboard](https://imagekit.io/dashboard/developer/api-keys)",
 				Required:  true,
 				Sensitive: true,
 			},

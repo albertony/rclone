@@ -55,7 +55,7 @@ var (
 func init() {
 	fsi := &fs.RegInfo{
 		Name:        "sftp",
-		Description: "SSH/SFTP",
+		Description: "SFTP: Secure/SSH File Transfer Protocol",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name:      "host",

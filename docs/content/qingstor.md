@@ -1,10 +1,12 @@
 ---
 title: "QingStor"
-description: "Rclone docs for QingStor Object Storage"
+description: "Rclone docs for QingStor"
 versionIntroduced: "v1.38"
 ---
 
 # {{< icon "fas fa-hdd" >}} QingStor
+
+QingStor is a distributed storage service provided by [QingCloud](https://intl.qingcloud.com/).
 
 Paths are specified as `remote:bucket` (or `remote:` for the `lsd`
 command.)  You may put subdirectories in too, e.g. `remote:bucket/path/to/dir`.
@@ -31,7 +33,7 @@ name> remote
 Type of storage to configure.
 Choose a number from below, or type in your own value
 [snip]
-XX / QingStor Object Storage
+XX / QingStor
    \ "qingstor"
 [snip]
 Storage> qingstor

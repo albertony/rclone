@@ -29,7 +29,7 @@ import (
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "koofr",
-		Description: "Koofr, Digi Storage and other Koofr-compatible storage providers",
+		Description: "Koofr: Koofr, Digi Storage and others",
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name: fs.ConfigProvider,

@@ -89,7 +89,7 @@ func init() {
 	// needs to be done early so we can use oauth during config
 	fs.Register(&fs.RegInfo{
 		Name:        "jottacloud",
-		Description: "Jottacloud",
+		Description: "Jottacloud: Jottacloud, Telia Cloud (Sweden), Telia Sky (Norway), Tele2 Cloud (Sweden), Onlime (Denmark), Elkjøp Cloud (Norway), Elgiganten Cloud (Sweden), Elgiganten Cloud (Denmark), Gigantti Cloud (Finland), ELKO Cloud (Iceland) and Let's Go Cloud (Germany)",
 		NewFs:       NewFs,
 		Config:      Config,
 		MetadataInfo: &fs.MetadataInfo{

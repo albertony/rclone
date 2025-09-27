@@ -1,12 +1,14 @@
 ---
-title: "Local Filesystem"
-description: "Rclone docs for the local filesystem"
+title: "Local"
+description: "Rclone docs for Local"
 versionIntroduced: "v0.91"
 ---
 
-# {{< icon "fas fa-hdd" >}} Local Filesystem
+# {{< icon "fas fa-hdd" >}} Local
 
-Local paths are specified as normal filesystem paths, e.g. `/path/to/wherever`, so
+This is a special backend representing the local filesystem.
+Local paths can be specified as normal filesystem paths, e.g.
+`/path/to/wherever`, so
 
 ```sh
 rclone sync --interactive /home/source /tmp/destination
