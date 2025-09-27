@@ -1,13 +1,14 @@
 ---
-title: "Swift"
-description: "Swift"
+title: "OpenStack Swift"
+description: "Rclone docs for OpenStack Swift"
 versionIntroduced: "v0.91"
 ---
 
-# {{< icon "fa fa-space-shuttle" >}} Swift
+# {{< icon "fa fa-space-shuttle" >}} OpenStack Swift
 
-Swift refers to [OpenStack Object Storage](https://docs.openstack.org/swift/latest/).
-Commercial implementations of that being:
+OpenStack Swift, or [OpenStack Object Storage](https://docs.openstack.org/swift/latest/),
+is an open source cloud storage software that some commercial storage providers uses.
+This backend supports the following providers:
 
 - [Rackspace Cloud Files](https://www.rackspace.com/cloud/files/)
 - [Memset Memstore](https://www.memset.com/cloud/storage/)
