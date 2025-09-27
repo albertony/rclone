@@ -1,7 +1,7 @@
 ---
 title: "Quatrix"
 description: "Rclone docs for Quatrix"
-versionIntroduced: "v1.63.2"
+versionIntroduced: "v1.64"
 ---
 
 # {{< icon "fas fa-shield-alt" >}} Quatrix
