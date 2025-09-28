@@ -358,7 +358,9 @@ func (os OptionExamples) Len() int { return len(os) }
 func (os OptionExamples) Swap(i, j int) { os[i], os[j] = os[j], os[i] }
 
 // Less is part of sort.Interface.
-func (os OptionExamples) Less(i, j int) bool { return os[i].Help < os[j].Help }
+func (os OptionExamples) Less(i, j int) bool {
+	return strings.ToLower(os[i].Help) < strings.ToLower(os[j].Help)
+}
 
 // Sort sorts an OptionExamples
 func (os OptionExamples) Sort() { sort.Sort(os) }
