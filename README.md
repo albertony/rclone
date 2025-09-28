@@ -105,6 +105,7 @@ directories to and from different cloud storage providers.
 - SeaweedFS [:page_facing_up:](https://rclone.org/s3/#seaweedfs)
 - Selectel Object Storage [:page_facing_up:](https://rclone.org/s3/#selectel)
 - SFTP [:page_facing_up:](https://rclone.org/sftp/)
+- Sia [:page_facing_up:](https://rclone.org/sia/)
 - SMB [:page_facing_up:](https://rclone.org/smb/)
 - Spectra Logic [:page_facing_up:](https://rclone.org/s3/#spectralogic)
 - StackPath [:page_facing_up:](https://rclone.org/s3/#stackpath)
