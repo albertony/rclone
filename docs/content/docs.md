@@ -57,6 +57,7 @@ See the following for detailed instructions for
 - [HiDrive](/hidrive/)
 - [HTTP](/http/)
 - [iCloud Drive](/iclouddrive/)
+- [ImageKit](/imagekit/)
 - [Internet Archive](/internetarchive/)
 - [Jottacloud](/jottacloud/)
 - [Koofr](/koofr/)
