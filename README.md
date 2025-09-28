@@ -113,6 +113,7 @@ directories to and from different cloud storage providers.
 - Synology C2 Object Storage [:page_facing_up:](https://rclone.org/s3/#synology-c2)
 - Tencent Cloud Object Storage (COS) [:page_facing_up:](https://rclone.org/s3/#tencent-cos)
 - Uloz.to [:page_facing_up:](https://rclone.org/ulozto/)
+- Uptobox [:page_facing_up:](https://rclone.org/uptobox/)
 - Wasabi [:page_facing_up:](https://rclone.org/s3/#wasabi)
 - WebDAV [:page_facing_up:](https://rclone.org/webdav/)
 - Yandex Disk [:page_facing_up:](https://rclone.org/yandex/)
