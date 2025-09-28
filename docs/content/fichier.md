@@ -10,7 +10,7 @@ This is a backend for the [1fichier](https://1fichier.com) cloud
 storage service. Note that a Premium subscription is required to use
 the API.
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

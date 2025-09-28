@@ -10,7 +10,7 @@ This is a Backend for Uptobox file storage service. Uptobox is closer to a
 one-click hoster than a traditional  cloud storage provider and therefore not
 suitable for long term storage.
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

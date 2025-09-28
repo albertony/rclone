@@ -6,7 +6,7 @@ versionIntroduced: "v1.02"
 
 # {{< icon "fab fa-dropbox" >}} Dropbox
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Dropbox paths may be as deep as required, e.g.
 `remote:directory/subdirectory`.

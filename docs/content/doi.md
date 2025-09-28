@@ -19,7 +19,7 @@ Currently, the DOI backend supports DOIs hosted with:
   - [Harvard Dataverse](https://dataverse.harvard.edu)
   - [Other Dataverse repositories](https://dataverse.org/installations)
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

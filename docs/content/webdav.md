@@ -6,7 +6,7 @@ versionIntroduced: "v1.39"
 
 # {{< icon "fa fa-globe" >}} WebDAV
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

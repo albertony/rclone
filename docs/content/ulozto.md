@@ -6,7 +6,7 @@ versionIntroduced: "v1.66"
 
 # {{< icon "fas fa-angle-double-down" >}} Uloz.to
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

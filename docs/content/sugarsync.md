@@ -98,7 +98,7 @@ To copy a local directory to an SugarSync folder called backup
 rclone copy /home/source remote:backup
 ```
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

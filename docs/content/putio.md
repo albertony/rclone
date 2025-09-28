@@ -6,7 +6,7 @@ versionIntroduced: "v1.49"
 
 # {{< icon "fas fa-parking" >}} Put.io
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Put.io paths may be as deep as required, e.g.
 `remote:directory/subdirectory`.

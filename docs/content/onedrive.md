@@ -6,7 +6,7 @@ versionIntroduced: "v1.24"
 
 # {{< icon "fab fa-windows" >}} Microsoft OneDrive
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 

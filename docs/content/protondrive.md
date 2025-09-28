@@ -23,7 +23,7 @@ has evolved over time there may be accounts it is not compatible
 with. Please [post on the rclone forum](https://forum.rclone.org/) if
 you find an incompatibility.
 
-Paths are specified as `remote:path`
+Paths are specified as `remote:path`.
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
