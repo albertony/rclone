@@ -28,9 +28,8 @@ solutions to different companies, such as:
 Most of the white-label versions are supported by this backend, although may
 require different authentication setup - described below.
 
-Paths are specified as `remote:path`.
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 ## Authentication types
 

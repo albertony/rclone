@@ -6,9 +6,8 @@ versionIntroduced: "v1.66"
 
 # {{< icon "fas fa-angle-double-down" >}} Uloz.to
 
-Paths are specified as `remote:path`.
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 The initial setup for Uloz.to involves filling in the user credentials.
 `rclone config` walks you through it.

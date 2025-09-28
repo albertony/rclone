@@ -8,7 +8,8 @@ versionIntroduced: "v1.62"
 
 PikPak is [a private cloud drive](https://mypikpak.com/).
 
-Paths are specified as `remote:path`, and may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 ## Configuration
 

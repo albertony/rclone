@@ -6,9 +6,8 @@ versionIntroduced: "v1.47"
 
 # {{< icon "fa fa-suitcase" >}} Koofr
 
-Paths are specified as `remote:path`.
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 ## Configuration
 

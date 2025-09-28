@@ -6,9 +6,8 @@ versionIntroduced: "v1.59"
 
 # {{< icon "fa fa-cloud" >}} HiDrive
 
-Paths are specified as `remote:path`
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 The initial setup for hidrive involves getting a token from HiDrive
 which you need to do in your browser.

@@ -8,9 +8,8 @@ versionIntroduced: "v1.64"
 
 Quatrix by Maytech is [Quatrix Secure Compliant File Sharing | Maytech](https://www.maytech.net/products/quatrix-business).
 
-Paths are specified as `remote:path`
-
-Paths may be as deep as required, e.g., `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 The initial setup for Quatrix involves getting an API Key from Quatrix. You can
 get the API key in the user's profile at `https://<account>/profile/api-keys`

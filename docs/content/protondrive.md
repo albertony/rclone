@@ -8,7 +8,7 @@ status: Beta
 # {{< icon "fa fa-folder" >}} Proton Drive
 
 [Proton Drive](https://proton.me/drive) is an end-to-end encrypted Swiss vault
- for your files that protects your data.
+for your files that protects your data.
 
 This is an rclone backend for Proton Drive which supports the file transfer
 features of Proton Drive using the same client-side encryption.
@@ -23,9 +23,8 @@ has evolved over time there may be accounts it is not compatible
 with. Please [post on the rclone forum](https://forum.rclone.org/) if
 you find an incompatibility.
 
-Paths are specified as `remote:path`.
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 ## Configurations
 

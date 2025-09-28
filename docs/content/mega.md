@@ -18,10 +18,8 @@ features of Mega using the same client side encryption.
 **Note** [MEGA S4 Object Storage](/s3#mega), an S3 compatible object
 store, also works with rclone and this is recommended for new projects.
 
-Paths are specified as `remote:path`.
-
-Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
-
+Paths are specified as `remote:path`, and may be as deep as required, e.g.
+`remote:directory/subdirectory`.
 
 ## Configuration
 
