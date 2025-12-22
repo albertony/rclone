@@ -2,5 +2,15 @@
     "files.eol": "\n",
     "go.buildTags": "cmount",
     "go.lintTool": "golangci-lint-v2",
-    "go.diagnostic.vulncheck": "Imports"
+    "go.diagnostic.vulncheck": "Imports",
+    "markdownlint.lintWorkspaceGlobs": [
+        "CONTRIBUTING.md",
+        "MAINTAINERS.md",
+        "README.md",
+        "RELEASE.md",
+        "CODE_OF_CONDUCT.md",
+        "librclone\\README.md",
+        "backend\\s3\\README.md",
+        "docs/content/{_index,authors,bugs,changelog,docs,downloads,faq,filtering,gui,install,licence,overview,privacy}.md"
+    ]
 }
